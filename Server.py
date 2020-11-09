@@ -9,4 +9,5 @@ app.register_blueprint(AuthBluePrint)
 app.register_blueprint(DevtestBluePrint)
 
 
-app.run()
+if __name__=="__main__":
+    app.run()
