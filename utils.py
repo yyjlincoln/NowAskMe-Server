@@ -57,10 +57,11 @@ def Arg(**TypeConvertionFunction):
             callDict = {}
 
             for arg in positional:
-                val = request.values.get(arg)
                 # Check if val is already in kw, as flask may pass some args
                 if arg in kw:
                     val = arg[kw]
+
+                val = request.values.get(arg)
 
                 if not val:
                     # A positional argument does not exist - bounce back with error message
@@ -75,13 +76,13 @@ def Arg(**TypeConvertionFunction):
                 else:
                     # Use default values
                     callDict[arg] = keywords[arg]
-            
+
             # Now, all required arguments are in callDict. Check and convert them
             for arg in callDict:
                 if arg in TypeConvertionFunction:
                     try:
                         # Attempt to convert it
-                        callDict[arg] = TypeConvertionFunction[arg](val)
+                        callDict[arg] = TypeConvertionFunction[arg](callDict[arg])
                     except:
                         return ExceptionBounce(-10002, argument=arg)
 
