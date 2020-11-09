@@ -1,12 +1,14 @@
 from flask import jsonify
 
 _ExceptionDefinitions = {
+    10000: 'Development mode',
+    -1 : 'Request failed.',
     -10001: 'Argument {argument} was not supplied.',
-    -10002: 'Conversion for {argument} could not be completed.'
+    -10002: 'Conversion for {argument} could not be completed.',
 }
 
 # Client-side exception bouncing
-def Bounce(code, message=None, **kw):
+def Res(code, message=None, **kw):
     if message:
         return jsonify({
             'code': code,

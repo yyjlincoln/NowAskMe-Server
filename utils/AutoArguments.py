@@ -2,7 +2,7 @@ import inspect
 import commons
 from flask import request, jsonify
 from functools import wraps
-from utils.ExceptionBounce import Bounce
+from utils.ResponseModule import Res
 
 # Construct a decorator to automatically retrieve arguments from a HTTP request
 
@@ -39,7 +39,7 @@ def Arg(**TypeConvertionFunction):
 
                 if not val:
                     # A positional argument does not exist - bounce back with error message
-                    return Bounce(-10001, argument = arg)
+                    return Res(-10001, argument = arg)
                 callDict[arg] = val
 
             for arg in keywords:
@@ -58,7 +58,7 @@ def Arg(**TypeConvertionFunction):
                         # Attempt to convert it
                         callDict[arg] = TypeConvertionFunction[arg](callDict[arg])
                     except:
-                        return Bounce(-10002, argument=arg)
+                        return Res(-10002, argument=arg)
 
             return func(*args, **kw, **callDict)
         return __retrieveWrap
