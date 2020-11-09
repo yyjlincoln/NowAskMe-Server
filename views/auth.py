@@ -1,10 +1,8 @@
 from flask import Blueprint, request
 import datetime
-from utils import Arg
+from utils.AutoArguments import Arg
 
 app = Blueprint('vauth', __name__)
 
-@app.route('/')
-@Arg(testPositional=int)
-def test(testPositional, testArguments = 'Test Default'):
-    return 'test'
+# This should be designed using Structured Approach
+
