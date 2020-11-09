@@ -5,6 +5,6 @@ from utils import Arg
 app = Blueprint('vauth', __name__)
 
 @app.route('/')
-@Arg()
+@Arg(testPositional=int)
 def test(testPositional, testArguments = 'Test Default'):
-    return 'ok'
+    return 'test'

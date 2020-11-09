@@ -81,7 +81,7 @@ def Arg(**TypeConvertionFunction):
                 if arg in TypeConvertionFunction:
                     try:
                         # Attempt to convert it
-                        callDict[arg] = TypeConvertionFunction[arg](arg)
+                        callDict[arg] = TypeConvertionFunction[arg](val)
                     except:
                         return ExceptionBounce(-10002, argument=arg)
 
