@@ -58,6 +58,10 @@ def Arg(**TypeConvertionFunction):
 
             for arg in positional:
                 val = request.values.get(arg)
+                # Check if val is already in kw, as flask may pass some args
+                if arg in kw:
+                    val = arg[kw]
+
                 if not val:
                     # A positional argument does not exist - bounce back with error message
                     return ExceptionBounce(-10001, argument = arg)
@@ -81,7 +85,6 @@ def Arg(**TypeConvertionFunction):
                     except:
                         return ExceptionBounce(-10002, argument=arg)
 
-
-            return func(*args, **kw)
+            return func(*args, **kw, **callDict)
         return __retrieveWrap
     return _retrieveWrap
