@@ -1,6 +1,6 @@
 # General Rule
 
-General rule for response codes in Groups is:
+General rule for response codes in NAM is:
 
 - For all successful events, but does not need any return, return 0.
 
