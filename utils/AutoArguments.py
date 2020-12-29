@@ -31,16 +31,25 @@ def Arg(FetchValues=FlaskRequest, **TypeConvertionFunction):
             zip(inspected.args[-len(inspected.defaults):] if inspected.defaults else [], inspected.defaults if inspected.defaults else []))
         # zip the keys and values together, then convert it to a dict
 
-        @wraps(func)  # Wrap the function so the decorator will not be identified
+
+        # @wraps(func)  # Wrap the function so the decorator will not be identified
+        # The function is not wrapped such that RequestMapping can detect there is **kw, so it will pass on __fetch_values and __channel
         def __retrieveWrap(*args, **kw):
+
+            # Compatibility layer with RequestMapping.
+            # This allows AutoArguments to detect whether this request is from RequestMapping, and if it is, then use __fetch_values instead of default FetchValues().
+            if '__fetch_values' in kw:
+                FetchValues = kw['__fetch_values']
+            # End compatibility layer.
+
             callDict = {}
 
             for arg in positional:
                 # Check if val is already in kw, as flask may pass some args
                 if arg in kw:
                     val = arg[kw]
-
-                val = FetchValues(arg)
+                else:
+                    val = FetchValues(arg)
 
                 if val == None:
                     # A positional argument does not exist - bounce back with error message
@@ -67,6 +76,6 @@ def Arg(FetchValues=FlaskRequest, **TypeConvertionFunction):
                     except:
                         return Res(-10002, argument=arg)
 
-            return func(*args, **kw, **callDict)
+            return func(*args, **callDict)
         return __retrieveWrap
     return _retrieveWrap

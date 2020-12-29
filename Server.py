@@ -13,8 +13,9 @@ CORS(app)
 rmap = RequestMap()
 
 @rmap.register_request('/')
-def addition(__fetch_values):
-    print(__fetch_values('test'))
+@Arg()
+def addition(**kw):
+    # print(__fetch_values('test'))
     return 'Hi'
 
 rmap.handle_flask(app)

@@ -15,12 +15,23 @@ class RequestMap():
         # This proxy adds any decorator and changes any values before the callback gets called.
         # e.g. this adds __channel and __fetch_values, which provides a unified interface for retrieving values from the
         # incoming request.
+
+        # Inspect the function, get arguments
+        inspected = inspect.getfullargspec(func).args
+
+        # Determine whether there is a var_kwarg
+        param = inspect.signature(func).parameters
+        __kw = False
+        for par in param:
+            if param[par].kind==inspect.Parameter.VAR_KEYWORD:
+                __kw = True
+
         @wraps(func)
         def _proxy(*args, **kw):
-            inspected = inspect.getfullargspec(func).args
-            if '__channel' in inspected:
+            # Using above info, attach __channel and __fetch_values
+            if '__channel' in inspected or __kw == True:
                 kw['__channel'] = channel
-            if '__fetch_values' in inspected:
+            if '__fetch_values' in inspected or __kw==True:
                 kw['__fetch_values'] = fetch_values
 
             return func(*args, **kw)
