@@ -10,11 +10,32 @@ from utils.ResponseModule import Res
 def FlaskRequest(key):
     return request.values.get(key)
 
+def DontFetch(key):
+    return None
 
-def Arg(FetchValues=FlaskRequest, **TypeConvertionFunction):
+def Arg(FetchValues=FlaskRequest, **TypeConversionFunction):
+    '''
+    Automatically generate an arguments list for a specific function, 
+    and fetches the corresponding values using FetchValues (defined here) or
+    __fetch_values (as an argument passed to the function, higher priority).
+
+    Then, attempt converting the arguments to the correct types defined in TypeConversionFunction.
+        For example:
+            @Arg(FetchValues = FlaskRequest, test_arg_name = int)
+            def func(test_arg_name):
+                pass
+
+        When the function is called, it will first check if the value is in **kwargs.
+        If it is not, then it will first try __fetch_values() or FetchValues().
+        If that didn't give a value, then it will throw an error and respond to the request using ResponseModule.
+
+        If the value is obtained, then it will call int({argument_value}) and try to convert it.
+        Then it will call the function func(**{test_arg_name: argument_value_converted})
+
+    '''
     # First run - check type conversion function
-    for arg in TypeConvertionFunction:
-        if not callable(TypeConvertionFunction[arg]):
+    for arg in TypeConversionFunction:
+        if not callable(TypeConversionFunction[arg]):
             raise commons.CallbackFunctionNotCallableException(
                 'Callback function for argument \"'+str(arg)+'\" is invalid as it is not callable.')
 
@@ -45,7 +66,7 @@ def Arg(FetchValues=FlaskRequest, **TypeConvertionFunction):
             callDict = {}
 
             for arg in positional:
-                # Check if val is already in kw, as flask may pass some args
+                # Check if val is already in kw, if it is, then use the existing value.
                 if arg in kw:
                     val = kw[arg]
                 else:
@@ -57,7 +78,11 @@ def Arg(FetchValues=FlaskRequest, **TypeConvertionFunction):
                 callDict[arg] = val
 
             for arg in keywords:
-                val = FetchValues(arg)
+                # Check if there is an existing kwargs value.
+                if arg in kw:
+                    val = kw[arg]
+                else:
+                    val = FetchValues(arg)
 
                 if val != None:
                     # If the value is supplied, use supplied.
@@ -68,10 +93,10 @@ def Arg(FetchValues=FlaskRequest, **TypeConvertionFunction):
 
             # Now, all required arguments are in callDict. Check and convert them
             for arg in callDict:
-                if arg in TypeConvertionFunction:
+                if arg in TypeConversionFunction:
                     try:
                         # Attempt to convert it
-                        callDict[arg] = TypeConvertionFunction[arg](
+                        callDict[arg] = TypeConversionFunction[arg](
                             callDict[arg])
                     except:
                         return Res(-10002, argument=arg)

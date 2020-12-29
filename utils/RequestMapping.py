@@ -6,7 +6,15 @@ import inspect
 
 
 class RequestMap():
-    'There can only exist ONE RequestMap in one application.'
+    '''
+    Use register_request() as a decorator to register a request.
+    The callback (handler) function may have __channel and __fetch_values as its keyword arguments.
+        __channel: string, indicating where the request came from. For example, 'flask'.
+        __fetch_values: function. Calling this function with a key will retrieve the corresponding value of the key.
+                        If the key does not exist, it will return None.
+    However, this is optional as this program will detects whether there is a **kwargs or whether above parameters is defined
+    in the callback function. If not, the values will not be passed.
+    '''
 
     def __init__(self):
         self.request_map = {}
