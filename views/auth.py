@@ -1,6 +1,7 @@
 import datetime
 from utils.AutoArguments import Arg
 import core.authlib
+import core.emaillib
 from utils.ResponseModule import Res
 
 
@@ -14,5 +15,8 @@ def attach(rmap):
     @rmap.register_request('/auth/request_login')
     @Arg()
     def send_email(email):
-        sendstatus = core.emaillib.send_login_verification()
-        return Res(0,sent=sendstatus)
+        code = core.emaillib.send_login_verification(email=email)
+        
+        if code==False:
+            return Res(-1,sent=False,message='Could not send the email!')
+        return Res(0, sent = True)

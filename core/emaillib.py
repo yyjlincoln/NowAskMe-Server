@@ -1,9 +1,56 @@
-import zmail
+# import zmail
 from credentials import Credentials
-print(Credentials['email']['password'])
+import random
+import datetime
+import time
+import string
+import secrets
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+from core.database import EmailVerification
+import os
+import logging
 
-def send_email():
-    pass
 
-def send_login_verification(email):
-    return True
+def send_email(email, subject, message):
+    message = Mail(
+        from_email='lincoln@nowask.me',
+        to_emails=email,
+        subject=subject,
+        html_content=message)
+    try:
+        sg = SendGridAPIClient(Credentials['email']['apikey'])
+        response = sg.send(message)
+        return True
+    except Exception as e:
+        return False
+
+
+def send_login_verification(email, name=None):
+    existingVerification = EmailVerification.objects(email__iexact=email.lower()).first()
+    if existingVerification:
+        existingVerification.delete()
+    
+
+    code = secrets.token_hex(3).upper()
+
+    result = send_email(email, 'NAM Email Verification',
+               f'''<p>Hey <b>{email if name==None else name}</b>,</p>
+    <p>You've just requested to log in or sign up at {datetime.datetime.fromtimestamp(time.time()).isoformat()}.</p>
+    <hr></hr>
+    <p>If that was you, please enter the following code to continue:</p>
+    <p style="font-size: 2em; text-align: center;"><b>{code}</b></p>
+    <hr></hr>
+    <p>Otherwise, please ignore this email.</p>
+    <p>Best regards,</p>
+    <p>Nowask.me</p>''')
+    if result:
+        try:
+            newVerification = EmailVerification(email = email, verification = code, timestamp=time.time())
+            newVerification.save()
+        except Exception as e:
+            print(e)
+            logging.warn('Could not save the verification code to database!')
+            return False
+        return True
+    return False
