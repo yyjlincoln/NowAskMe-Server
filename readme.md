@@ -2,4 +2,4 @@
 
 This is the backend of NAM.
 
-Please refer to /docs for more details
+Please refer to /docs for more detail.

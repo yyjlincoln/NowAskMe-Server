@@ -1,12 +1,17 @@
 import inspect
 import commons
-from flask import request, jsonify
+from flask import request
 from functools import wraps
 from utils.ResponseModule import Res
 
 # Construct a decorator to automatically retrieve arguments from a HTTP request
 
-def Arg(**TypeConvertionFunction):
+
+def FlaskRequest(key):
+    return request.values.get(key)
+
+
+def Arg(FetchValues=FlaskRequest, **TypeConvertionFunction):
     # First run - check type conversion function
     for arg in TypeConvertionFunction:
         if not callable(TypeConvertionFunction[arg]):
@@ -35,16 +40,17 @@ def Arg(**TypeConvertionFunction):
                 if arg in kw:
                     val = arg[kw]
 
-                val = request.values.get(arg)
+                val = FetchValues(arg)
 
-                if not val:
+                if val == None:
                     # A positional argument does not exist - bounce back with error message
-                    return Res(-10001, argument = arg)
+                    return Res(-10001, argument=arg)
                 callDict[arg] = val
 
             for arg in keywords:
-                val = request.values.get(arg)
-                if val:
+                val = FetchValues(arg)
+
+                if val != None:
                     # If the value is supplied, use supplied.
                     callDict[arg] = val
                 else:
@@ -56,7 +62,8 @@ def Arg(**TypeConvertionFunction):
                 if arg in TypeConvertionFunction:
                     try:
                         # Attempt to convert it
-                        callDict[arg] = TypeConvertionFunction[arg](callDict[arg])
+                        callDict[arg] = TypeConvertionFunction[arg](
+                            callDict[arg])
                     except:
                         return Res(-10002, argument=arg)
 
