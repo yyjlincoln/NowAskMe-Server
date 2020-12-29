@@ -1,12 +1,24 @@
 from flask import Flask, Blueprint
 from flask_cors import CORS
-from views.auth import app as AuthBluePrint
-from views.devtest import app as DevtestBluePrint
-from utils import RequestMapping
+from utils.RequestMapping import RequestMap
+from utils.AutoArguments import Arg
+
+import views.auth
+import views.devtest
+
 app = Flask(__name__)
 CORS(app)
 
 
-# Compile Request
-if __name__=="__main__":
+rmap = RequestMap()
+
+@rmap.register_request('/')
+def addition(__fetch_values):
+    print(__fetch_values('test'))
+    return 'Hi'
+
+rmap.handle_flask(app)
+
+
+if __name__ == "__main__":
     app.run()
