@@ -22,6 +22,29 @@ Common Errors that may arise.
 
 Request has failed, with no explanation or explanation in message.
 
+## -100 Family
+
+Authentication issue
+
+### -101
+
+Authentication can not be completed as no login request was initiated.
+
+### -102
+
+The OTP has expired.
+
+### -103
+
+Incorrect OTP
+
+### -104
+
+Maximum attempts reached. Please request another OTP.
+
+### -105
+
+User not registered.
 ## -10000 Family
 
 Error Related to Args Module

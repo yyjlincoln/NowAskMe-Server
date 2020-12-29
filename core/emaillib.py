@@ -27,26 +27,29 @@ def send_email(email, subject, message):
 
 
 def send_login_verification(email, name=None):
-    existingVerification = EmailVerification.objects(email__iexact=email.lower()).first()
+    existingVerification = EmailVerification.objects(email__iexact=email).first()
     if existingVerification:
         existingVerification.delete()
+        print('Deleted old verif')
     
 
-    code = secrets.token_hex(3).upper()
+    otp = secrets.token_hex(3).upper()
 
     result = send_email(email, 'NAM Email Verification',
-               f'''<p>Hey <b>{email if name==None else name}</b>,</p>
+    f'''
+    <p>Hey <b>{email if name==None else name}</b>,</p>
     <p>You've just requested to log in or sign up at {datetime.datetime.fromtimestamp(time.time()).isoformat()}.</p>
     <hr></hr>
-    <p>If that was you, please enter the following code to continue:</p>
-    <p style="font-size: 2em; text-align: center;"><b>{code}</b></p>
+    <p>If that was you, please enter the following OTP to continue:</p>
+    <p style="font-size: 2em; text-align: center;"><b>{otp}</b></p>
     <hr></hr>
     <p>Otherwise, please ignore this email.</p>
     <p>Best regards,</p>
     <p>Nowask.me</p>''')
+    print(result)
     if result:
         try:
-            newVerification = EmailVerification(email = email, verification = code, timestamp=time.time())
+            newVerification = EmailVerification(email = email, otp = otp, timestamp=time.time(), scope='login')
             newVerification.save()
         except Exception as e:
             print(e)

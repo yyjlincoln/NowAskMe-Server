@@ -6,12 +6,27 @@ class User(me.Document):
     userid = me.StringField()
     name = me.StringField()
 
+
 class UserPrivate(me.Document):
-    uuid = me.StringField(unique=True, primary=True)  # This will never change
+    uuid = me.StringField(unique=True, primary=True)
     email = me.EmailField(unique=True)
     registerationTime = me.FloatField()
 
+
 class EmailVerification(me.Document):
-    email = me.StringField(unique=True, required = True)
-    verification=me.StringField(required = True)
-    timestamp = me.FloatField()
+    email = me.StringField(unique=True, required=True)
+    otp = me.StringField(required=True)
+    timestamp = me.FloatField(required=True)
+    scope = me.StringField(required=True)
+    attemptsLeft = me.IntField(default=3)
+
+
+class Token(me.EmbeddedDocument):
+    token = me.StringField(required=True)
+    scope = me.StringField(required=True)
+    expiry = me.FloatField(required=True)
+
+
+class UserStatus(me.Document):
+    uuid = me.StringField(unique=True)
+    tokens = me.EmbeddedDocumentListField(Token, default=[])
