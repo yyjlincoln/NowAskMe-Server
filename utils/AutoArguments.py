@@ -53,8 +53,8 @@ def Arg(FetchValues=FlaskRequest, **TypeConversionFunction):
         # zip the keys and values together, then convert it to a dict
 
 
-        # @wraps(func)  # Wrap the function so the decorator will not be identified
-        # The function is not wrapped such that RequestMapping can detect there is **kw, so it will pass on __fetch_values and __channel
+
+        @wraps(func)  # Wrap the function so the decorator will not be identified
         def __retrieveWrap(*args, **kw):
 
             # Compatibility layer with RequestMapping.

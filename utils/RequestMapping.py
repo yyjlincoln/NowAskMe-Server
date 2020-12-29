@@ -16,8 +16,9 @@ class RequestMap():
     in the callback function. If not, the values will not be passed.
     '''
 
-    def __init__(self):
+    def __init__(self, always_pass_channel_and_fetch_values=False):
         self.request_map = {}
+        self.pass_params = always_pass_channel_and_fetch_values
 
     def flask_proxy(self, func, channel, fetch_values):
         # This proxy adds any decorator and changes any values before the callback gets called.
@@ -37,9 +38,9 @@ class RequestMap():
         @wraps(func)
         def _proxy(*args, **kw):
             # Using above info, attach __channel and __fetch_values
-            if '__channel' in inspected or __kw == True:
+            if '__channel' in inspected or __kw == True or self.pass_params:
                 kw['__channel'] = channel
-            if '__fetch_values' in inspected or __kw==True:
+            if '__fetch_values' in inspected or __kw==True or self.pass_params:
                 kw['__fetch_values'] = fetch_values
 
             return func(*args, **kw)

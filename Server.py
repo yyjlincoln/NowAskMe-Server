@@ -8,7 +8,11 @@ from flask_mongoengine import MongoEngine
 from credentials import Credentials
 
 app = Flask(__name__)
-rmap = RequestMap()
+# Since Arg() will have to be wrapped in order to allow Flask to work,
+# And that will result the param detection to detect the ORIGINAL function
+# NOT the Arg() function, then __fetch_values will NOT be passed.
+# To resolve this, enable this option so it forcibly passes the arguments.
+rmap = RequestMap(always_pass_channel_and_fetch_values=True)
 # CORS Policy
 CORS(app)
 
