@@ -12,7 +12,10 @@ CORS(app)
 
 rmap = RequestMap()
 
-
+@rmap.register_request('/')
+@Arg()
+def addition(hello):
+    return hello
 
 rmap.handle_flask(app)
 
