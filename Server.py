@@ -14,9 +14,8 @@ rmap = RequestMap()
 
 @rmap.register_request('/')
 @Arg()
-def addition(**kw):
-    # print(__fetch_values('test'))
-    return 'Hi'
+def addition(__fetch_values):
+    return __fetch_values('hello')
 
 rmap.handle_flask(app)
 

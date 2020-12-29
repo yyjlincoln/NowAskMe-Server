@@ -47,7 +47,7 @@ def Arg(FetchValues=FlaskRequest, **TypeConvertionFunction):
             for arg in positional:
                 # Check if val is already in kw, as flask may pass some args
                 if arg in kw:
-                    val = arg[kw]
+                    val = kw[arg]
                 else:
                     val = FetchValues(arg)
 
