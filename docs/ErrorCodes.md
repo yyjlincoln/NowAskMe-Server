@@ -50,6 +50,38 @@ User not registered.
 
 User already registered.
 
+### -107
+
+Authentication required.
+
+### -108
+
+Invalid token
+
+### -109
+
+Token has expired
+
+### -110
+
+Unknown scope
+
+### -111
+
+Insufficient permission: missing permission.
+
+### -112
+
+uuid may not be updated
+
+### -113
+
+Properties validation failed
+
+### -114
+
+Could not commit changes to the database
+
 ## -10000 Family
 
 Error Related to Args Module
