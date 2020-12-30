@@ -21,3 +21,6 @@ def update_user_profile(uuid, **properties):
         return 0
     except:
         return -114
+
+def get_user_profile(uuid):
+    return core.authlib.get_user_info_by_uuid(uuid)

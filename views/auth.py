@@ -2,6 +2,7 @@ import datetime
 from utils.AutoArguments import Arg
 import core.authlib
 import core.emaillib
+from utils.AutoAuthentication import permission_control
 from utils.ResponseModule import Res
 
 
@@ -54,10 +55,13 @@ def attach(rmap):
             uuid = core.authlib.new_user(email)
             if not uuid:
                 return Res(-106, email=email)
-            token = core.authlib.new_token(uuid=uuid, scope='log in')
+            token = core.authlib.new_token(uuid=uuid, scope='login')
             user = core.authlib.get_user_info_by_uuid(uuid=uuid)
             return Res(0, 'Successfully registered.', token=token, userid=user.userid, name=user.name, uuid=uuid)
         return Res(code, email=email)
 
-
-
+    @rmap.register_request('/auth/check_scope')
+    @permission_control(scopes=['basic_view'])
+    @Arg()
+    def check_scope(token):
+        return Res(0, scope=core.authlib.get_token_scope(token))
