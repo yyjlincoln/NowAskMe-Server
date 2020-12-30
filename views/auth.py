@@ -63,5 +63,5 @@ def attach(rmap):
     @rmap.register_request('/auth/check_scope')
     @permission_control(scopes=['basic_view'])
     @Arg()
-    def check_scope(token):
-        return Res(0, scope=core.authlib.get_token_scope(token))
+    def check_scope(uuid, token):
+        return Res(0, scope=core.authlib.get_token_scope(uuid, token))
