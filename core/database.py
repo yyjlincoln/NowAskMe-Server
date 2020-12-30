@@ -18,7 +18,7 @@ class EmailVerification(me.Document):
     otp = me.StringField(required=True)
     timestamp = me.FloatField(required=True)
     scope = me.StringField(required=True)
-    attemptsLeft = me.IntField(default=3)
+    attemptsLeft = me.IntField(default=4)
 
 
 class Token(me.EmbeddedDocument):

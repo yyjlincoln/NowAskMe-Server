@@ -20,7 +20,7 @@ def email_verification(email, otp):
     if time.time() - email.timestamp > 300:
         email.delete()
         return -102
-    if email.otp != otp:
+    if email.otp.lower() != otp.lower():
         return -103
     email.delete()
     return 0
