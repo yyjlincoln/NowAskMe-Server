@@ -11,7 +11,6 @@ from core.database import EmailVerification
 import os
 import logging
 
-
 def send_email(email, subject, message):
     message = Mail(
         from_email='lincoln@nowask.me',
@@ -38,14 +37,14 @@ def send_login_verification(email, name=None):
     result = send_email(email, 'NAM Email Verification',
     f'''
     <p>Hey <b>{email if name==None else name}</b>,</p>
-    <p>You've just requested to log in or sign up at {datetime.datetime.fromtimestamp(time.time()).isoformat()}.</p>
+    <p>You've just requested to authenticate yourself at {datetime.datetime.fromtimestamp(time.time()).isoformat()}.</p>
     <hr></hr>
     <p>If that was you, please enter the following OTP to continue:</p>
     <p style="font-size: 2em; text-align: center;"><b>{otp}</b></p>
     <hr></hr>
     <p>Otherwise, please ignore this email.</p>
     <p>Best regards,</p>
-    <p>Nowask.me</p>''')
+    <p>Lincoln from NowAsk.me</p>''')
     print(result)
     if result:
         try:

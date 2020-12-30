@@ -5,6 +5,7 @@ class User(me.Document):
     uuid = me.StringField(unique=True, primary=True, required = True)  # This will never change
     userid = me.StringField()
     name = me.StringField(default="user")
+    description = me.StringField(default="")
 
 
 class UserPrivate(me.Document):

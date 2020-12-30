@@ -15,7 +15,14 @@ def attach(rmap):
     @rmap.register_request('/auth/send_email')
     @Arg()
     def send_email(email):
-        code = core.emaillib.send_login_verification(email=email)
+        uuid = core.authlib.get_uuid_by_email(email)
+        name = email
+        if uuid:
+            userinfo = core.authlib.get_user_info_by_uuid(uuid)
+            if userinfo.name != 'user':
+                name = userinfo.name
+
+        code = core.emaillib.send_login_verification(email=email, name=name)
 
         if code == False:
             return Res(-1, sent=False, message='Could not send the email!')
@@ -49,10 +56,8 @@ def attach(rmap):
                 return Res(-106, email=email)
             token = core.authlib.new_token(uuid=uuid, scope='log in')
             user = core.authlib.get_user_info_by_uuid(uuid=uuid)
-            return Res(0, 'Successfully registered.', token=token, userid=user.userid, name=user.name, uuid = uuid)
+            return Res(0, 'Successfully registered.', token=token, userid=user.userid, name=user.name, uuid=uuid)
         return Res(code, email=email)
 
-    @rmap.register_request('/auth/register/email')
-    @Arg()
-    def register_email(email):
-        pass
+
+
