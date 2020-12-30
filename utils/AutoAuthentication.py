@@ -8,22 +8,20 @@ from commons import NAMExceptions
 
 scopeList = {
     'login': [
-        'edit_profile',
+        'update_profile',
         'basic_view',
         'basic_write',
         'renew_token',
         'post',
     ],
     'expired':{},
-    
-
 }
 
 
 def permission_control(scopes=['basic_view','baisc_write']):
-    for scope in scopes:
-        if scope not in scopeList:
-            raise NAMExceptions(f'Invalid scope \'{scope}\'!')
+    # for scope in scopes:
+    #     if scope not in scopeList:
+    #         raise NAMExceptions(f'Invalid scope \'{scope}\'!')
     def _permission_control(func):
         @wraps(func)
         @Arg()

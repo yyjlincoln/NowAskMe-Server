@@ -1,4 +1,5 @@
 import views.auth
+import views.user
 from flask import Flask, Blueprint
 from flask_cors import CORS
 from utils.RequestMapping import RequestMap
@@ -26,8 +27,8 @@ app.config['MONGODB_SETTINGS'] = {
 db.init_app(app)
 
 # Import and attach modules
-import views.auth
 views.auth.attach(rmap)
+views.user.attach(rmap)
 
 # Handle flask
 rmap.handle_flask(app)

@@ -60,7 +60,9 @@ def Arg(FetchValues=FlaskRequest, **TypeConversionFunction):
             # Compatibility layer with RequestMapping.
             # This allows AutoArguments to detect whether this request is from RequestMapping, and if it is, then use __fetch_values instead of default FetchValues().
             if '__fetch_values' in kw:
-                FetchValues = kw['__fetch_values']
+                FetchMethod = kw['__fetch_values']
+            else:
+                FetchMethod = FetchValues
             # End compatibility layer.
 
             callDict = {}
@@ -70,7 +72,7 @@ def Arg(FetchValues=FlaskRequest, **TypeConversionFunction):
                 if arg in kw:
                     val = kw[arg]
                 else:
-                    val = FetchValues(arg)
+                    val = FetchMethod(arg)
 
                 if val == None:
                     # A positional argument does not exist - bounce back with error message
@@ -82,7 +84,7 @@ def Arg(FetchValues=FlaskRequest, **TypeConversionFunction):
                 if arg in kw:
                     val = kw[arg]
                 else:
-                    val = FetchValues(arg)
+                    val = FetchMethod(arg)
 
                 if val != None:
                     # If the value is supplied, use supplied.
