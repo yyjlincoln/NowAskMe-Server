@@ -11,7 +11,8 @@ _ExceptionDefinitions = {
     -102: 'The OTP has expired.',
     -103: 'Incorrect OTP.',
     -104: 'Maximum attempts reached. Please request for another OTP.',
-    -105: 'User {email} not registered.'
+    -105: 'User {email} not registered.',
+    -106: 'User {email} had already registered. Please log in instead of sign up.'
 }
 
 # Client-side exception bouncing

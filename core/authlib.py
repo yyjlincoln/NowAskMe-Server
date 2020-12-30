@@ -1,6 +1,7 @@
-from core.database import User, UserPrivate, EmailVerification
+from core.database import User, UserPrivate, EmailVerification, Token, UserStatus
 import time
-
+import logging
+import secrets
 
 def get_if_email_exists(email):
     return True if UserPrivate.objects(email__iexact=email).first() else False
@@ -20,7 +21,7 @@ def email_verification(email, otp):
     if time.time() - email.timestamp > 300:
         email.delete()
         return -102
-    if email.otp.lower() != otp.lower():
+    if email.otp.upper() != otp.upper():
         return -103
     email.delete()
     return 0
@@ -36,8 +37,29 @@ def get_uuid_by_email(email):
 def get_user_info_by_uuid(uuid):
     return User.objects(uuid__iexact=uuid).first()
 
+def new_user(email):
+    uuid = secrets.token_hex(16)
+    try:
+        newUserPublic = User(uuid=uuid)
+        newUserPrivate = UserPrivate(uuid=uuid, registerationTime=time.time(), email=email)
+        newUserPrivate.save()
+        newUserPublic.save()
+        return uuid
+    except:
+        return False
 
 def new_token(uuid, scope):
-    # [TODO]
-    token = '12345'
-    return token
+    token = secrets.token_hex()
+    # Get User Status
+    user = UserStatus.objects(uuid__iexact=uuid).first()
+    if not user:
+        user = UserStatus(uuid=uuid)
+        user.save()
+    token_entry = Token(token=token, scope=scope, expiry=time.time()+86400)
+    user.tokens.append(token_entry)
+    try:
+        user.save()
+        return token
+    except Exception as e:
+        logging.exception(e)
+        return False

@@ -45,6 +45,11 @@ Maximum attempts reached. Please request another OTP.
 ### -105
 
 User not registered.
+
+### -106
+
+User already registered.
+
 ## -10000 Family
 
 Error Related to Args Module

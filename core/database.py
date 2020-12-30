@@ -2,13 +2,13 @@ import mongoengine as me
 
 
 class User(me.Document):
-    uuid = me.StringField(unique=True, primary=True)  # This will never change
+    uuid = me.StringField(unique=True, primary=True, required = True)  # This will never change
     userid = me.StringField()
-    name = me.StringField()
+    name = me.StringField(default="user")
 
 
 class UserPrivate(me.Document):
-    uuid = me.StringField(unique=True, primary=True)
+    uuid = me.StringField(unique=True, primary=True, required = True)
     email = me.EmailField(unique=True)
     registerationTime = me.FloatField()
 
@@ -28,5 +28,5 @@ class Token(me.EmbeddedDocument):
 
 
 class UserStatus(me.Document):
-    uuid = me.StringField(unique=True)
+    uuid = me.StringField(unique=True, required = True)
     tokens = me.EmbeddedDocumentListField(Token, default=[])
