@@ -12,6 +12,10 @@ import os
 import logging
 
 def send_email(email, subject, message):
+    if Credentials['debug']:
+        # Don't actually send the email
+        print(message)
+        return True
     message = Mail(
         from_email='lincoln@nowask.me',
         to_emails=email,
