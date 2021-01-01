@@ -36,8 +36,8 @@ def get_user_status_by_uuid(uuid):
 
 
 def get_user_followers_relation_by_uuid(uuid):
+    'Returns [UserRelations(), ...] of users who has <uuid> in their following.'
     return UserRelations.objects(following__iexact=uuid)
-
 
 def get_user_relations_by_uuid(uuid):
     return UserRelations.objects(uuid__iexact=uuid).first()

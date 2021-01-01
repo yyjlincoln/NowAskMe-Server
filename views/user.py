@@ -37,6 +37,16 @@ def attach(rmap):
             return Res(0, following=u.following[start:limit])
         return Res(0, following=[])
 
+    @rmap.register_request('/user/get_pinned')
+    @permission_control(scopes=['relation_view'])
+    @Arg(start=int, limit=int)
+    def get_pinned(uuid, start=0, limit=100):
+        # Pinned is private
+        u = core.userlib.get_user_relations_by_uuid(uuid=uuid)
+        if u:
+            return Res(0, pinned=u.pinned[start:limit])
+        return Res(0, pinned=[])
+
     @rmap.register_request('/user/get_followers')
     @permission_control(scopes=['relation_view'])
     @Arg(start=int, limit=int, target=utils.AutoArgValidators.validate_user_existance)
@@ -51,3 +61,34 @@ def attach(rmap):
                 ret.append(user.uuid)
             return Res(0, followers=ret[start:limit])
         return Res(0, followers=[])
+
+
+    @rmap.register_request('/user/is_following')
+    @permission_control(scopes=['relation_view'])
+    @Arg(start=int, limit=int, target=utils.AutoArgValidators.validate_user_existance)
+    def is_following(uuid, target, start=0, limit=100):
+        u = core.userlib.get_user_relations_by_uuid(uuid=uuid)
+        if u:
+            if target.lower() in [x.lower() for x in u.following]:
+                return Res(0, following=True)
+        return Res(0, following=False)
+
+    @rmap.register_request('/user/is_follower')
+    @permission_control(scopes=['relation_view'])
+    @Arg(start=int, limit=int, target=utils.AutoArgValidators.validate_user_existance)
+    def is_follower(uuid, target, start=0, limit=100):
+        u = core.userlib.get_user_relations_by_uuid(uuid=target)
+        if u:
+            if uuid.lower() in [x.lower() for x in u.following]:
+                return Res(0, follower=True)
+        return Res(0, follower=False)
+
+    # @rmap.register_request('/user/follow')
+    # @permission_control(scopes=['relation_view'])
+    # @Arg(start=int, limit=int, target=utils.AutoArgValidators.validate_user_existance)
+    # def is_follower(uuid, target, start=0, limit=100):
+    #     u = core.userlib.get_user_relations_by_uuid(uuid=target)
+    #     if u:
+    #         if uuid.lower() in [x.lower() for x in u.following]:
+    #             return Res(0, follower=True)
+    #     return Res(0, follower=False)
