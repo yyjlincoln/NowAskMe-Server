@@ -2,8 +2,10 @@ from flask import jsonify
 
 _ExceptionDefinitions = {
     10000: 'Development mode',
-    101:'Already following.',
-    102:'Already not following.',
+    101: 'Already following.',
+    102: 'Already not following.',
+    103: 'Already pinned',
+    104: 'Already unpinned',
     0: 'Success',
     -1: 'Request failed.',
     -10001: 'Argument {argument} was not supplied.',
@@ -21,8 +23,8 @@ _ExceptionDefinitions = {
     -110: 'Unknown scope {scope}',
     -111: 'Access to this API is denied. Missing permission: {scope}',
     -112: 'uuid may not be updated',
-    -113:'Properties validation failed',
-    -114:'Could not commit changes to the database',
+    -113: 'Properties validation failed',
+    -114: 'Could not commit changes to the database',
 }
 
 # Client-side exception bouncing
