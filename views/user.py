@@ -58,14 +58,14 @@ def attach(rmap):
     @permission_control(scopes=['relation_view'])
     @Arg(target=utils.AutoArgValidators.validate_user_existance)
     def is_follower(uuid, target):
-        return Res(0, following=core.userlib.is_following(target, uuid))
+        return Res(0, follower=core.userlib.is_following(target, uuid))
         # If target is following uuid, then to uuid, target is a follower.
 
     @rmap.register_request('/user/is_pinned')
     @permission_control(scopes=['relation_view'])
     @Arg(target=utils.AutoArgValidators.validate_user_existance)
     def is_pinned(uuid, target):
-        return Res(0, following=core.userlib.is_pinned(target, uuid))
+        return Res(0, pinned=core.userlib.is_pinned(target, uuid))
 
     @rmap.register_request('/user/follow')
     @permission_control(scopes=['relation_write'])
