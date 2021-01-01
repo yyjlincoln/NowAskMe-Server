@@ -49,3 +49,96 @@ def get_user_info_by_uuid(uuid):
 
 def get_user_private_by_uuid(uuid):
     return UserPrivate.objects(uuid__iexact=uuid).first()
+
+def get_following_by_uuid(uuid):
+    u = get_user_relations_by_uuid(uuid=uuid)
+    if u:
+        return u.following
+    return []
+
+def get_pinned_by_uuid(uuid):
+    u = get_user_relations_by_uuid(uuid=uuid)
+    if u:
+        return u.pinned
+    return []
+
+def get_followers_by_uuid(uuid):
+    users = get_user_followers_relation_by_uuid(uuid=uuid)
+    ret = []
+    if users:
+        # Generate a list of followers
+        for user in users:
+            ret.append(user.uuid)
+    return ret
+
+def is_following(uuid,target):
+    u = get_user_relations_by_uuid(uuid=uuid)
+    if u:
+        if target.lower() in [x.lower() for x in u.following]:
+            return True
+    return False
+
+def is_pinned(uuid,target):
+    u = get_user_relations_by_uuid(uuid=uuid)
+    if u:
+        if target.lower() in [x.lower() for x in u.pinned]:
+            return True
+    return False
+
+def follow(uuid, target):
+    if is_following(uuid, target):
+        return 101
+    u = get_user_relations_by_uuid(uuid)
+    if not u:
+        u = UserRelations(uuid=uuid)
+        u.save()
+    try:
+        u.following.append(target)
+        u.save()
+        return 0
+    except:
+        return -114
+
+def unfollow(uuid, target):
+    if not is_following(uuid, target):
+        return 102
+    u = get_user_relations_by_uuid(uuid)
+    if not u:
+        u = UserRelations(uuid=uuid)
+        u.save()
+    try:
+        u.following.remove(target)
+        u.save()
+        return 0
+    except:
+        return -114
+
+def pin(uuid, target):
+    if is_pinned(uuid, target):
+        return 103
+    u = get_user_relations_by_uuid(uuid)
+    if not u:
+        u = UserRelations(uuid=uuid)
+        u.save()
+    try:
+        u.pinned.append(target)
+        u.save()
+        return 0
+    except:
+        return -114
+
+def unpin(uuid, target):
+    if not is_pinned(uuid, target):
+        return 104
+    u = get_user_relations_by_uuid(uuid)
+    if not u:
+        u = UserRelations(uuid=uuid)
+        u.save()
+    try:
+        u.pinned.remove(target)
+        u.save()
+        return 0
+    except:
+        return -114
+
+        

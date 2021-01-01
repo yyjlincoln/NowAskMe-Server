@@ -32,20 +32,13 @@ def attach(rmap):
     def get_following(uuid, target=None, start=0, limit=100):
         if not target:
             target = uuid
-        u = core.userlib.get_user_relations_by_uuid(uuid=target)
-        if u:
-            return Res(0, following=u.following[start:limit])
-        return Res(0, following=[])
+        return Res(0, following=core.userlib.get_following_by_uuid(uuid=target)[start:limit])
 
     @rmap.register_request('/user/get_pinned')
     @permission_control(scopes=['relation_view'])
     @Arg(start=int, limit=int)
     def get_pinned(uuid, start=0, limit=100):
-        # Pinned is private
-        u = core.userlib.get_user_relations_by_uuid(uuid=uuid)
-        if u:
-            return Res(0, pinned=u.pinned[start:limit])
-        return Res(0, pinned=[])
+        return Res(0, pinned=core.userlib.get_pinned_by_uuid(uuid=uuid)[start:limit])
 
     @rmap.register_request('/user/get_followers')
     @permission_control(scopes=['relation_view'])
@@ -53,42 +46,47 @@ def attach(rmap):
     def get_followers(uuid, target=None, start=0, limit=100):
         if not target:
             target = uuid
-        users = core.userlib.get_user_followers_relation_by_uuid(uuid=target)
-        if users:
-            # Generate a list of followers
-            ret = []
-            for user in users:
-                ret.append(user.uuid)
-            return Res(0, followers=ret[start:limit])
-        return Res(0, followers=[])
-
+        return Res(0, followers=core.userlib.get_followers_by_uuid(uuid))
 
     @rmap.register_request('/user/is_following')
     @permission_control(scopes=['relation_view'])
-    @Arg(start=int, limit=int, target=utils.AutoArgValidators.validate_user_existance)
-    def is_following(uuid, target, start=0, limit=100):
-        u = core.userlib.get_user_relations_by_uuid(uuid=uuid)
-        if u:
-            if target.lower() in [x.lower() for x in u.following]:
-                return Res(0, following=True)
-        return Res(0, following=False)
+    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    def is_following(uuid, target):
+        return Res(0, following=core.userlib.is_following(uuid, target))
 
     @rmap.register_request('/user/is_follower')
     @permission_control(scopes=['relation_view'])
-    @Arg(start=int, limit=int, target=utils.AutoArgValidators.validate_user_existance)
-    def is_follower(uuid, target, start=0, limit=100):
-        u = core.userlib.get_user_relations_by_uuid(uuid=target)
-        if u:
-            if uuid.lower() in [x.lower() for x in u.following]:
-                return Res(0, follower=True)
-        return Res(0, follower=False)
+    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    def is_follower(uuid, target):
+        return Res(0, following=core.userlib.is_following(target, uuid))
+        # If target is following uuid, then to uuid, target is a follower.
 
-    # @rmap.register_request('/user/follow')
-    # @permission_control(scopes=['relation_view'])
-    # @Arg(start=int, limit=int, target=utils.AutoArgValidators.validate_user_existance)
-    # def is_follower(uuid, target, start=0, limit=100):
-    #     u = core.userlib.get_user_relations_by_uuid(uuid=target)
-    #     if u:
-    #         if uuid.lower() in [x.lower() for x in u.following]:
-    #             return Res(0, follower=True)
-    #     return Res(0, follower=False)
+    @rmap.register_request('/user/is_pinned')
+    @permission_control(scopes=['relation_view'])
+    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    def is_pinned(uuid, target):
+        return Res(0, following=core.userlib.is_pinned(target, uuid))
+
+    @rmap.register_request('/user/follow')
+    @permission_control(scopes=['relation_write'])
+    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    def follow(uuid, target):
+        return Res(core.userlib.follow(uuid, target))
+
+    @rmap.register_request('/user/unfollow')
+    @permission_control(scopes=['relation_write'])
+    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    def unfollow(uuid, target):
+        return Res(core.userlib.unfollow(uuid, target))
+
+    @rmap.register_request('/user/pin')
+    @permission_control(scopes=['relation_write'])
+    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    def pin(uuid, target):
+        return Res(core.userlib.pin(uuid, target))
+
+    @rmap.register_request('/user/unfollow')
+    @permission_control(scopes=['relation_write'])
+    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    def unpin(uuid, target):
+        return Res(core.userlib.unpin(uuid, target))

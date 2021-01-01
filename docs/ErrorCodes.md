@@ -10,6 +10,22 @@ General rule for response codes in NAM is:
   
 ## Warnings (1 to 10)
 
+### 101
+
+Already following.
+
+### 102
+
+Already not following
+
+### 103
+
+Already pinned
+
+### 104
+
+Already unpinned
+
 ### 10000
 
 Development Mode
@@ -93,3 +109,7 @@ An argument of a function was not supplied.
 ### -10002
 
 The argument supplied is invalid or could not be converted to the expected format. (When convertion function raises an exception)
+
+### -99999
+
+Internal Server Error

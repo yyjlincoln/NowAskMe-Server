@@ -2,6 +2,8 @@ from flask import jsonify
 
 _ExceptionDefinitions = {
     10000: 'Development mode',
+    101:'Already following.',
+    102:'Already not following.',
     0: 'Success',
     -1: 'Request failed.',
     -10001: 'Argument {argument} was not supplied.',
