@@ -85,7 +85,7 @@ def attach(rmap):
     def pin(uuid, target):
         return Res(core.userlib.pin(uuid, target))
 
-    @rmap.register_request('/user/unfollow')
+    @rmap.register_request('/user/unpin')
     @permission_control(scopes=['relation_write'])
     @Arg(target=utils.AutoArgValidators.validate_user_existance)
     def unpin(uuid, target):
