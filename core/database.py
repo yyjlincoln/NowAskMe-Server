@@ -2,14 +2,15 @@ import mongoengine as me
 
 
 class User(me.Document):
-    uuid = me.StringField(unique=True, primary=True, required = True)  # This will never change
+    uuid = me.StringField(unique=True, primary=True,
+                          required=True)  # This will never change
     userid = me.StringField()
     name = me.StringField(default="user")
     description = me.StringField(default="")
 
 
 class UserPrivate(me.Document):
-    uuid = me.StringField(unique=True, primary=True, required = True)
+    uuid = me.StringField(unique=True, primary=True, required=True)
     email = me.EmailField(unique=True)
     registerationTime = me.FloatField()
 
@@ -29,5 +30,11 @@ class Token(me.EmbeddedDocument):
 
 
 class UserStatus(me.Document):
-    uuid = me.StringField(unique=True, required = True)
+    uuid = me.StringField(unique=True, required=True)
     tokens = me.EmbeddedDocumentListField(Token, default=[])
+
+
+class UserRelations(me.Document):
+    uuid = me.StringField(unique=True, required=True)
+    following = me.ListField(me.StringField(),default=[])  # A list of uuids that the user is following
+    pinned = me.ListField(me.StringField(),default=[])

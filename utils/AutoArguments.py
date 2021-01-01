@@ -6,6 +6,12 @@ from utils.ResponseModule import Res
 
 # Construct a decorator to automatically retrieve arguments from a HTTP request
 
+class ReturnRaw(Exception):
+    'A self-constructed validator can inherent this class and return custom info'
+    def __init__(self, message):
+        super().__init__(self)
+        self.returned = message
+
 
 def FlaskRequest(key):
     return request.values.get(key)
@@ -100,6 +106,8 @@ def Arg(FetchValues=FlaskRequest, **TypeConversionFunction):
                         # Attempt to convert it
                         callDict[arg] = TypeConversionFunction[arg](
                             callDict[arg])
+                    except ReturnRaw as e:
+                        return e.returned
                     except:
                         return Res(-10002, argument=arg)
 

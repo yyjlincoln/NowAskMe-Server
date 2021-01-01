@@ -13,6 +13,8 @@ scopeList = {
         'basic_write',
         'renew_token',
         'post',
+        'relation_view',
+        'relation_write'
     ],
     'expired':{},
 }

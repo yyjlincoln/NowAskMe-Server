@@ -7,3 +7,6 @@ class CallbackFunctionNotCallableException(NAMExceptions):
 
 class CredentialsError(NAMExceptions):
     'Could not load credentials or incorrect credentials'
+
+class ValidationError(NAMExceptions):
+    'Validation error.'

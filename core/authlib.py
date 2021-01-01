@@ -2,6 +2,7 @@ from core.database import User, UserPrivate, EmailVerification, Token, UserStatu
 import time
 import logging
 import secrets
+import core.userlib
 
 def get_if_email_exists(email):
     return True if UserPrivate.objects(email__iexact=email).first() else False
@@ -34,12 +35,6 @@ def get_uuid_by_email(email):
     return None
 
 
-def get_user_info_by_uuid(uuid):
-    return User.objects(uuid__iexact=uuid).first()
-
-def get_user_private_by_uuid(uuid):
-    return UserPrivate.objects(uuid__iexact=uuid).first()
-
 def new_user(email):
     uuid = secrets.token_hex(16)
     try:
@@ -53,7 +48,7 @@ def new_user(email):
 
 def new_token(uuid, scope):
     token = secrets.token_hex()
-    user=get_user_status_by_uuid(uuid)
+    user=core.userlib.get_user_status_by_uuid(uuid)
     token_entry = Token(token=token, scope=scope, expiry=time.time()+86400)
     user.tokens.append(token_entry)
     try:
@@ -63,18 +58,8 @@ def new_token(uuid, scope):
         logging.exception(e)
         return False
 
-def get_user_status_by_uuid(uuid):
-    if not get_user_info_by_uuid(uuid):
-        return None
-
-    user = UserStatus.objects(uuid__iexact=uuid).first()
-    if not user:
-        user = UserStatus(uuid=uuid)
-        user.save()
-    return user
-
 def get_token_scope(uuid, token):
-    user = get_user_status_by_uuid(uuid)
+    user = core.userlib.get_user_status_by_uuid(uuid)
     if user:
         for t in user.tokens:
             if t.token == token:

@@ -19,7 +19,7 @@ def attach(rmap):
         uuid = core.authlib.get_uuid_by_email(email)
         name = email
         if uuid:
-            userinfo = core.authlib.get_user_info_by_uuid(uuid)
+            userinfo = core.userlib.get_user_info_by_uuid(uuid)
             if userinfo.name != 'user':
                 name = userinfo.name
 
@@ -38,7 +38,7 @@ def attach(rmap):
             if not uuid:
                 return Res(-105, email=email)
             token = core.authlib.new_token(uuid=uuid, scope=scope)
-            user = core.authlib.get_user_info_by_uuid(uuid=uuid)
+            user = core.userlib.get_user_info_by_uuid(uuid=uuid)
             return Res(0, 'Successfully logged in.', token=token, userid=user.userid, name=user.name, uuid=uuid)
 
         return Res(code, email=email)
@@ -56,7 +56,7 @@ def attach(rmap):
             if not uuid:
                 return Res(-106, email=email)
             token = core.authlib.new_token(uuid=uuid, scope='login')
-            user = core.authlib.get_user_info_by_uuid(uuid=uuid)
+            user = core.userlib.get_user_info_by_uuid(uuid=uuid)
             return Res(0, 'Successfully registered.', token=token, userid=user.userid, name=user.name, uuid=uuid)
         return Res(code, email=email)
 
