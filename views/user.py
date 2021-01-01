@@ -18,12 +18,13 @@ def attach(rmap):
 
     @rmap.register_request('/user/get_profile')
     @permission_control(scopes=['basic_view'])
-    @Arg()
-    def get_profile(uuid):
-        u = core.userlib.get_user_info_by_uuid(uuid)
-        if u:
-            return Res(0, uuid=u.uuid, userid=u.userid, name=u.name, description=u.description)
-        return Res(-105)
+    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    def get_profile(uuid, target=None):
+        if not target:
+            target = uuid
+
+        u = core.userlib.get_user_info_by_uuid(target)
+        return Res(0, uuid=u.uuid, userid=u.userid, name=u.name, description=u.description)
 
     @rmap.register_request('/user/get_following')
     @permission_control(scopes=['relation_view'])
