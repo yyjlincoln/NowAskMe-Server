@@ -3,7 +3,6 @@ import core.authlib
 from mongoengine.queryset.visitor import Q
 
 
-
 def update_user_profile(uuid, **properties):
     user = get_user_info_by_uuid(uuid)
     if not user:
@@ -41,6 +40,7 @@ def get_user_followers_relation_by_uuid(uuid):
     'Returns [UserRelations(), ...] of users who has <uuid> in their following.'
     return UserRelations.objects(following__iexact=uuid)
 
+
 def get_user_relations_by_uuid(uuid):
     return UserRelations.objects(uuid__iexact=uuid).first()
 
@@ -52,17 +52,20 @@ def get_user_info_by_uuid(uuid):
 def get_user_private_by_uuid(uuid):
     return UserPrivate.objects(uuid__iexact=uuid).first()
 
+
 def get_following_by_uuid(uuid):
     u = get_user_relations_by_uuid(uuid=uuid)
     if u:
         return u.following
     return []
 
+
 def get_pinned_by_uuid(uuid):
     u = get_user_relations_by_uuid(uuid=uuid)
     if u:
         return u.pinned
     return []
+
 
 def get_followers_by_uuid(uuid):
     users = get_user_followers_relation_by_uuid(uuid=uuid)
@@ -73,19 +76,22 @@ def get_followers_by_uuid(uuid):
             ret.append(user.uuid)
     return ret
 
-def is_following(uuid,target):
+
+def is_following(uuid, target):
     u = get_user_relations_by_uuid(uuid=uuid)
     if u:
         if target.lower() in [x.lower() for x in u.following]:
             return True
     return False
 
-def is_pinned(uuid,target):
+
+def is_pinned(uuid, target):
     u = get_user_relations_by_uuid(uuid=uuid)
     if u:
         if target.lower() in [x.lower() for x in u.pinned]:
             return True
     return False
+
 
 def follow(uuid, target):
     if is_following(uuid, target):
@@ -101,6 +107,7 @@ def follow(uuid, target):
     except:
         return -114
 
+
 def unfollow(uuid, target):
     if not is_following(uuid, target):
         return 102
@@ -114,6 +121,7 @@ def unfollow(uuid, target):
         return 0
     except:
         return -114
+
 
 def pin(uuid, target):
     if is_pinned(uuid, target):
@@ -129,6 +137,7 @@ def pin(uuid, target):
     except:
         return -114
 
+
 def unpin(uuid, target):
     if not is_pinned(uuid, target):
         return 104
@@ -143,6 +152,15 @@ def unpin(uuid, target):
     except:
         return -114
 
-def search(term):
-    query = User.objects( Q(uuid__iexact=term) | Q(userid__icontains=term) | Q(name__icontains=term))
+
+def search(term, only_uuid=False, only_userid=False, only_name=False):
+    if only_uuid:
+        query = User.objects(Q(uuid__iexact=term))
+    elif only_userid:
+        query = User.objects(Q(userid__icontains=term))
+    elif only_name:
+        query = User.objects(Q(name__icontains=term))
+    else:
+        query = User.objects(Q(uuid__iexact=term) | Q(
+            userid__icontains=term) | Q(name__icontains=term))
     return query

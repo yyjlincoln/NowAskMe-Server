@@ -95,7 +95,21 @@ def attach(rmap):
     @permission_control(scopes=['basic_view'])
     @Arg(start=int, limit=int)
     def search(term, start=0, limit=100):
+        only_uuid = False
+        only_userid = False
+        only_name = False
+        if term:
+            if term[0] == '#':
+                term = term[1:]
+                only_userid = True
+            elif term[0] == '!':
+                term = term[1:]
+                only_name = True
+            elif term[0] == '$':
+                term = term[1:]
+                only_uuid = True
+
         ret = []
-        for user in core.userlib.search(term):
+        for user in core.userlib.search(term, only_name=only_name, only_userid=only_userid, only_uuid=only_uuid):
             ret.append(user.uuid)
         return Res(0, results=ret[start:limit])
