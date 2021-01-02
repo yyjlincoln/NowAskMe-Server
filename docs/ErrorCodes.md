@@ -26,6 +26,10 @@ Already pinned
 
 Already unpinned
 
+### 105
+
+Not authenticated yet
+
 ### 10000
 
 Development Mode
@@ -97,6 +101,18 @@ Properties validation failed
 ### -114
 
 Could not commit changes to the database
+
+### -115
+
+QR login reuqest not found.
+
+### -116
+
+QR login request has expired
+
+### -117
+
+QR login request has been rejected
 
 ## -10000 Family
 

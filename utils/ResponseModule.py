@@ -6,6 +6,7 @@ _ExceptionDefinitions = {
     102: 'Already not following.',
     103: 'Already pinned',
     104: 'Already unpinned',
+    105: 'Not authenticated yet',
     0: 'Success',
     -1: 'Request failed.',
     -10001: 'Argument {argument} was not supplied.',
@@ -25,6 +26,9 @@ _ExceptionDefinitions = {
     -112: 'uuid may not be updated',
     -113: 'Properties validation failed',
     -114: 'Could not commit changes to the database',
+    -115: 'QR login request not found',
+    -116: 'QR login request has expired',
+    -117: 'QR login request has been rejected'
 }
 
 # Client-side exception bouncing

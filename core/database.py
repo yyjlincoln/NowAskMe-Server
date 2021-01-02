@@ -36,5 +36,19 @@ class UserStatus(me.Document):
 
 class UserRelations(me.Document):
     uuid = me.StringField(unique=True, required=True)
-    following = me.ListField(me.StringField(),default=[])  # A list of uuids that the user is following
-    pinned = me.ListField(me.StringField(),default=[])
+    # A list of uuids that the user is following
+    following = me.ListField(me.StringField(), default=[])
+    pinned = me.ListField(me.StringField(), default=[])
+
+
+class QRLogin(me.Document):
+    requestid = me.StringField(unique=True, required=True)
+    status = me.IntField(default=0)
+    # -1: rejected
+    # 0: not authenticated
+    # 1: scanned, approval needed
+    # 
+    expiry = me.FloatField()
+    uuid = me.StringField()
+    scope = me.StringField()
+
