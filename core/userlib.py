@@ -1,5 +1,7 @@
 from core.database import User, UserPrivate, UserRelations, UserStatus
 import core.authlib
+from mongoengine.queryset.visitor import Q
+
 
 
 def update_user_profile(uuid, **properties):
@@ -141,4 +143,6 @@ def unpin(uuid, target):
     except:
         return -114
 
-        
+def search(term):
+    query = User.objects( Q(uuid__iexact=term) | Q(userid__icontains=term) | Q(name__icontains=term))
+    return query

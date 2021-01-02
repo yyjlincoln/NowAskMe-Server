@@ -65,7 +65,7 @@ def attach(rmap):
     @permission_control(scopes=['relation_view'])
     @Arg(target=utils.AutoArgValidators.validate_user_existance)
     def is_pinned(uuid, target):
-        return Res(0, pinned=core.userlib.is_pinned(uuid,target))
+        return Res(0, pinned=core.userlib.is_pinned(uuid, target))
 
     @rmap.register_request('/user/follow')
     @permission_control(scopes=['relation_write'])
@@ -90,3 +90,12 @@ def attach(rmap):
     @Arg(target=utils.AutoArgValidators.validate_user_existance)
     def unpin(uuid, target):
         return Res(core.userlib.unpin(uuid, target))
+
+    @rmap.register_request('/user/search')
+    @permission_control(scopes=['basic_view'])
+    @Arg(start=int, limit=int)
+    def search(term, start=0, limit=100):
+        ret = []
+        for user in core.userlib.search(term):
+            ret.append(user.uuid)
+        return Res(0, results=ret[start:limit])
