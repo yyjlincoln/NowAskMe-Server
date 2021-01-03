@@ -52,3 +52,9 @@ class QRLogin(me.Document):
     uuid = me.StringField()
     scope = me.StringField()
 
+class Biometrics(me.Document):
+    deviceid = me.StringField(unique = True, required = True)
+    uuid = me.StringField()
+    challenge = me.StringField()
+    pubkey = me.StringField()
+    counter = me.IntField()
