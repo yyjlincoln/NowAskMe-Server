@@ -47,6 +47,23 @@ class RequestMap():
             return func(*args, **kw)
         return _proxy
 
+    def endpoint_proxy(self, func, route):
+        @wraps(func)
+        def _endpoint_proxy(*args, **kw):
+            # This is the last layer before the actual endpoint is called.
+            # However, if there is any decorators below @rmap.register_request,
+            # then that will be called before the endpoint.
+
+            # This endpoint proxy will and only will be called ONCE each request
+            # (or multiple times if there is a batch request)
+            # This will be particularlly good for traffic analysis and rate limiting.
+            
+            # Route metadata can be obtained through:
+            # self.request_map[route]
+
+            return func(*args, **kw)
+        return _endpoint_proxy
+
     def register_request(self, route, *args, name=None, **kw):
         'Use __channel, __fetch_values as variables in your function to determine where the request came from, and by calling __fetch_variables you may retrieve its parameters on demand.'
         def _register_request(func):
@@ -62,7 +79,9 @@ class RequestMap():
             self.request_map[route] = {
                 'args': args,
                 'kw': kw,
-                'func': func,
+                # 'func': func,
+                'func': self.endpoint_proxy(func, route=route),
+                '_func': func,
                 'name': name if name != None else func.__name__
             }
             return __register_request
