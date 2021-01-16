@@ -28,7 +28,8 @@ _ExceptionDefinitions = {
     -114: 'Could not commit changes to the database',
     -115: 'QR login request not found',
     -116: 'QR login request has expired',
-    -117: 'QR login request has been rejected'
+    -117: 'QR login request has been rejected',
+    -118:'The requested post {postid} does not exist'
 }
 
 # Client-side exception bouncing

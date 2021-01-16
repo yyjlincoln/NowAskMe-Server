@@ -12,7 +12,8 @@ scopeList = {
         'basic_view',
         'basic_write',
         'renew_token',
-        'post',
+        'post_view',
+        'post_write',
         'relation_view',
         'relation_write'
     ],

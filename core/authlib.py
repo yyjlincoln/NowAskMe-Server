@@ -1,4 +1,4 @@
-from core.database import User, UserPrivate, EmailVerification, Token, UserStatus, QRLogin
+from core.database import User, UserPrivate, EmailVerification, Token, UserStatus, UserPrivacy
 import time
 import logging
 import secrets
@@ -42,7 +42,9 @@ def new_user(email):
         newUserPublic = User(uuid=uuid)
         newUserPrivate = UserPrivate(
             uuid=uuid, registerationTime=time.time(), email=email)
+        newUserPrivacy = UserPrivacy(uuid=uuid)
         newUserPrivate.save()
+        newUserPrivacy.save()
         newUserPublic.save()
         return uuid
     except:
@@ -77,12 +79,12 @@ def get_token_scope(uuid, token):
     return None
 
 
-def new_qr_request(scope='login'):
-    requestid = secrets.token_hex(32)
-    req = QRLogin(requestid=requestid, expiry=time.time()+180, scope=scope)
-    req.save()
-    return requestid
+# def new_qr_request(scope='login'):
+#     requestid = secrets.token_hex(32)
+#     req = QRLogin(requestid=requestid, expiry=time.time()+180, scope=scope)
+#     req.save()
+#     return requestid
 
-def get_qr_request(requestid):
-    obj =  QRLogin.objects(requestid__iexact=requestid)
-    return obj
+# def get_qr_request(requestid):
+#     obj =  QRLogin.objects(requestid__iexact=requestid)
+#     return obj

@@ -114,6 +114,10 @@ QR login request has expired
 
 QR login request has been rejected
 
+### -118
+
+The requested post does not exist
+
 ## -10000 Family
 
 Error Related to Args Module
