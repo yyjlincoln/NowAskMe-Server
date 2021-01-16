@@ -3,6 +3,7 @@ import warnings
 from utils.AutoArguments import Arg
 from flask import request
 import inspect
+from utils.ResponseModule import Res
 
 
 class RequestMap():
@@ -32,7 +33,7 @@ class RequestMap():
         param = inspect.signature(func).parameters
         __kw = False
         for par in param:
-            if param[par].kind==inspect.Parameter.VAR_KEYWORD:
+            if param[par].kind == inspect.Parameter.VAR_KEYWORD:
                 __kw = True
 
         @wraps(func)
@@ -40,7 +41,7 @@ class RequestMap():
             # Using above info, attach __channel and __fetch_values
             if '__channel' in inspected or __kw == True or self.pass_params:
                 kw['__channel'] = channel
-            if '__fetch_values' in inspected or __kw==True or self.pass_params:
+            if '__fetch_values' in inspected or __kw == True or self.pass_params:
                 kw['__fetch_values'] = fetch_values
 
             return func(*args, **kw)
@@ -83,3 +84,33 @@ class RequestMap():
             except Exception as e:
                 raise RuntimeError(
                     'Can not handle flask due to flask exception.')
+
+    def map_request(self, route):
+        if route not in self.request_map:
+            return None
+        else:
+            return self.request_map[route]['func']
+
+    def values_proxy(self, values):
+        def _values_proxy(key):
+            if key in values:
+                return values[key]
+            return None
+        return _values_proxy
+
+    def parse_batch(self, requestArray):
+        '''
+        request = {
+        'route':'/......',
+        'data':{......}
+        }
+        '''
+        ret = []
+        for request in requestArray:
+            mapped = self.map_request(request['route'])
+            if mapped:
+                ret.append(mapped(__fetch_values=self.values_proxy(
+                    request['data'] if 'data' in request else {}), __channel='batch'))
+            else:
+                ret.append(Res(-20001, route=request['route']))
+        return Res(0, batch=ret)

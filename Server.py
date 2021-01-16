@@ -8,6 +8,7 @@ from utils.AutoArguments import Arg
 from utils.ResponseModule import Res
 from flask_mongoengine import MongoEngine
 from credentials import Credentials
+import json
 
 app = Flask(__name__)
 # Since Arg() will have to be wrapped in order to allow Flask to work,
@@ -35,6 +36,11 @@ views.post.attach(rmap)
 # Handle flask
 rmap.handle_flask(app)
 
+
+@app.route('/batch')
+@Arg(batch=json.loads)
+def batch_request(batch):
+    return rmap.parse_batch(batch)
 
 
 if __name__ == "__main__":

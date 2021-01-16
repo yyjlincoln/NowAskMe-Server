@@ -49,7 +49,6 @@ def attach(rmap):
         code = core.authlib.email_verification(email, otp)
         if code == 0:
             uuid = core.authlib.get_uuid_by_email(email)
-            print(uuid)
             if uuid:
                 return Res(-106, email=email)
             uuid = core.authlib.new_user(email)

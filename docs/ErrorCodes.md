@@ -138,6 +138,12 @@ An argument of a function was not supplied.
 
 The argument supplied is invalid or could not be converted to the expected format. (When convertion function raises an exception)
 
+## -20000 Family
+
+### -20001 Request Failed
+
+RequestMap could not map the route to a valid endpoint.
+
 ### -99999
 
 Internal Server Error

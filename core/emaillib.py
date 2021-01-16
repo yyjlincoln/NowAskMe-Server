@@ -37,7 +37,6 @@ def send_login_verification(email, name=None):
     existingVerification = EmailVerification.objects(email__iexact=email).first()
     if existingVerification:
         existingVerification.delete()
-        print('Deleted old verif')
     
 
     otp = secrets.token_hex(3).upper()
@@ -53,7 +52,6 @@ def send_login_verification(email, name=None):
     <p>Otherwise, please ignore this email.</p>
     <p>Best regards,</p>
     <p>Lincoln from NowAsk.me</p>''')
-    print(result)
     if result:
         try:
             newVerification = EmailVerification(email = email, otp = otp, timestamp=time.time(), scope='login')
