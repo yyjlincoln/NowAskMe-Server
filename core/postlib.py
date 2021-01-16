@@ -29,3 +29,12 @@ def get_stream(uuid):
         if utils.PrivacyControl.post_privacy(post.postid, uuid):
             r.append(post.postid)
     return r
+
+
+def get_user_stream(uuid, target):
+    p = Post.objects(uuid__iexact=target).order_by('-time')
+    r = []
+    for post in p:
+        if utils.PrivacyControl.post_privacy(post.postid, target):
+            r.append(post.postid)
+    return r

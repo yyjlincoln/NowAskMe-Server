@@ -22,19 +22,22 @@ def attach(rmap):
             'time': post.time,
             'type': post.posttype,
             'postid': post.postid,
-            'uuid': post.uuid
+            'uuid': post.uuid,
+            'privacy': post.privacy
         })
 
-    @rmap.register_request('/post/get_user_post')
+    @rmap.register_request('/post/get_user_stream')
     @permission_control(['post_view'])
-    @Arg()
-    def post_get_user_post():
-        pass
+    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    def post_get_user_post(uuid, target):
+        stream = core.postlib.get_user_stream(uuid, target)
+        return Res(0, stream=stream)
 
     @rmap.register_request('/post/get_stream')
     @permission_control(['post_view'])
     @Arg()
     def post_get_stream(uuid):
+        # TODO: Add limit
         stream = core.postlib.get_stream(uuid)
         return Res(0, stream=stream)
 

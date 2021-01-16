@@ -64,11 +64,11 @@ Maximum attempts reached. Please request another OTP.
 
 ### -105
 
-User not registered.
+User does not exist.
 
 ### -106
 
-User already registered.
+User already exists.
 
 ### -107
 
