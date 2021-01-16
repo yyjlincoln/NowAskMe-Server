@@ -29,7 +29,9 @@ _ExceptionDefinitions = {
     -115: 'QR login request not found',
     -116: 'QR login request has expired',
     -117: 'QR login request has been rejected',
-    -118:'The requested post {postid} does not exist'
+    -118: 'The requested post {postid} does not exist',
+    -119: 'Access to this content is denied.',
+    -120: 'Access to this operation has been denied.'
 }
 
 # Client-side exception bouncing

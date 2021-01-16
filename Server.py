@@ -30,7 +30,7 @@ db.init_app(app)
 # Import and attach modules
 views.auth.attach(rmap)
 views.user.attach(rmap)
-views.auth.attach(rmap)
+views.post.attach(rmap)
 
 # Handle flask
 rmap.handle_flask(app)

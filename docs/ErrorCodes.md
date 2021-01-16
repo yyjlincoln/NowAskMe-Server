@@ -88,7 +88,7 @@ Unknown scope
 
 ### -111
 
-Insufficient permission: missing permission.
+Insufficient permission: missing permission. (API / Token Level)
 
 ### -112
 
@@ -117,6 +117,14 @@ QR login request has been rejected
 ### -118
 
 The requested post does not exist
+
+### -119
+
+Access to this content is denied.
+
+### -120
+
+Access to this operation has been denied. Insufficient permissions.
 
 ## -10000 Family
 

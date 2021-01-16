@@ -15,4 +15,5 @@ def validate_user_existance(uuid):
 def validate_post_existance(postid):
     post = core.postlib.get_post_by_postid(postid)
     if not post:
-        return ReturnRaw(Res(-118, postid=postid))
+        raise ReturnRaw(Res(-118, postid=postid))
+    return postid

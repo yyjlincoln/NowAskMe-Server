@@ -8,6 +8,7 @@ class User(me.Document):
     name = me.StringField(default="user")
     description = me.StringField(default="")
 
+
 class UserPrivate(me.Document):
     uuid = me.StringField(unique=True, primary=True, required=True)
     email = me.EmailField(unique=True)
@@ -46,7 +47,7 @@ class UserRelations(me.Document):
 #     # -1: rejected
 #     # 0: not authenticated
 #     # 1: scanned, approval needed
-#     # 
+#     #
 #     expiry = me.FloatField()
 #     uuid = me.StringField()
 #     scope = me.StringField()
@@ -67,11 +68,12 @@ class UserRelations(me.Document):
 
 class Post(me.Document):
     uuid = me.StringField()
-    postid = me.StringField()
+    postid = me.StringField(unique=True)
     posttype = me.StringField()
     content = me.StringField()
     time = me.FloatField()
     privacy = me.StringField(default='inherit')
+
 
 class UserPrivacy(me.Document):
     uuid = me.StringField(unique=True, required=True)

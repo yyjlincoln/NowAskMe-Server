@@ -21,19 +21,15 @@ scopeList = {
     'expired': {},
 }
 
-validators = {
-    'post_privacy': utils.PrivacyControl.post_privacy
-}
-
-
-def permission_control(scopes=['basic_view', 'baisc_write'], validate=[]):
+def permission_control(scopes=['basic_view', 'baisc_write']):
+    # def permission_control(scopes=['basic_view', 'baisc_write'], validate=[]):
     # for scope in scopes:
     #     if scope not in scopeList:
     #         raise NAMExceptions(f'Invalid scope \'{scope}\'!')
-    for validator in validate:
-        if validator not in validators:
-            raise NAMExceptions(
-                f'Invalid validator name \'{validator}\'. Please register the validator in AutoAuthentication.')
+    # for validator in validate:
+    #     if validator not in validators:
+    #         raise NAMExceptions(
+    #             f'Invalid validator name \'{validator}\'. Please register the validator in AutoAuthentication.')
 
     def _permission_control(func):
         @wraps(func)
@@ -58,14 +54,6 @@ def permission_control(scopes=['basic_view', 'baisc_write'], validate=[]):
                     if sc not in scopeList[scope]:
                         return Res(-111, scope=sc)
 
-                # All good now
-                for validator in validators:
-                    pass
-
                 return func(*args, **kw)
         return __permission_control
     return _permission_control
-
-
-def authenticate(scope):
-    pass
