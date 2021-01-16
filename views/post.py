@@ -10,7 +10,7 @@ import time
 
 def attach(rmap):
     @rmap.register_request('/post/get_post')
-    @permission_control(['post_view'])
+    @permission_control(['post_view'], checks=['post_privacy'])
     @Arg(postid=utils.AutoArgValidators.validate_post_existance)
     def post_get_post(uuid, postid):
         'Gets post by postid.'

@@ -19,4 +19,5 @@ def privacy_check(privacy_type):
 # ======TODO END======
 
 def post_privacy(postid, accessFrom):
-    priv = core.privacylib.get_user_privacy_options(postedBy)
+    # priv = core.privacylib.get_user_privacy_options()
+    pass

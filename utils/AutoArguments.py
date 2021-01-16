@@ -6,8 +6,10 @@ from utils.ResponseModule import Res
 
 # Construct a decorator to automatically retrieve arguments from a HTTP request
 
+
 class ReturnRaw(Exception):
     'A self-constructed validator can inherent this class and return custom info'
+
     def __init__(self, message):
         super().__init__(self)
         self.returned = message
@@ -16,10 +18,12 @@ class ReturnRaw(Exception):
 def FlaskRequest(key):
     return request.values.get(key)
 
+
 def DontFetch(key):
     return None
 
-def Arg(FetchValues=FlaskRequest, **TypeConversionFunction):
+
+def Arg(FetchValues=FlaskRequest, PassExcessArguments=False, **TypeConversionFunction):
     '''
     Automatically generate an arguments list for a specific function, 
     and fetches the corresponding values using FetchValues (defined here) or
@@ -38,6 +42,13 @@ def Arg(FetchValues=FlaskRequest, **TypeConversionFunction):
         If the value is obtained, then it will call int({argument_value}) and try to convert it.
         Then it will call the function func(**{test_arg_name: argument_value_converted})
 
+    PassExcessArguments:
+        By enabling this option, this module will do its best with named arguments, and instead of checking what
+        the function actually needs, this module will pass on all excess parameters.
+
+        This can cause some errors. Use this option only if Arg() is used as a middle layer 
+        (i.e this decorator does not directly call func().)
+        This is particularly useful when there are other decorators that may take var_kw.
     '''
     # First run - check type conversion function
     for arg in TypeConversionFunction:
@@ -58,8 +69,6 @@ def Arg(FetchValues=FlaskRequest, **TypeConversionFunction):
             zip(inspected.args[-len(inspected.defaults):] if inspected.defaults else [], inspected.defaults if inspected.defaults else []))
         # zip the keys and values together, then convert it to a dict
 
-
-
         @wraps(func)  # Wrap the function so the decorator will not be identified
         def __retrieveWrap(*args, **kw):
 
@@ -72,6 +81,8 @@ def Arg(FetchValues=FlaskRequest, **TypeConversionFunction):
             # End compatibility layer.
 
             callDict = {}
+            if PassExcessArguments:
+                callDict = kw
 
             for arg in positional:
                 # Check if val is already in kw, if it is, then use the existing value.
