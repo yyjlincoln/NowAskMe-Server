@@ -57,7 +57,7 @@ class RequestMap():
             # This endpoint proxy will and only will be called ONCE each request
             # (or multiple times if there is a batch request)
             # This will be particularlly good for traffic analysis and rate limiting.
-            
+
             # Route metadata can be obtained through:
             # self.request_map[route]
 
@@ -125,11 +125,14 @@ class RequestMap():
         }
         '''
         ret = []
-        for request in requestArray:
-            mapped = self.map_request(request['route'])
-            if mapped:
-                ret.append(mapped(__fetch_values=self.values_proxy(
-                    request['data'] if 'data' in request else {}), __channel='batch'))
-            else:
-                ret.append(Res(-20001, route=request['route']))
-        return Res(0, batch=ret)
+        try:
+            for request in requestArray:
+                mapped = self.map_request(request['route'])
+                if mapped:
+                    ret.append(mapped(__fetch_values=self.values_proxy(
+                        request['data'] if 'data' in request else {}), __channel='batch'))
+                else:
+                    ret.append(Res(-20001, route=request['route']))
+            return Res(0, batch=ret)
+        except:
+            return Res(-1, 'Could not complete the request due to error. Please check whether batch argument is in the right format.')
