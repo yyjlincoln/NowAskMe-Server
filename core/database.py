@@ -80,3 +80,6 @@ class UserPrivacy(me.Document):
     post = me.StringField(default='public')
     dm = me.StringField(default='public')
     # search-with options
+
+# class UserConfig(me.Document):
+#     uuid = me.StringField(unique = True)

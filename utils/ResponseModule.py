@@ -18,6 +18,7 @@ _ExceptionDefinitions = {
     103: 'Already pinned',
     104: 'Already unpinned',
     105: 'Not authenticated yet',
+    106:'Insufficient permissions. Requesting as an anomonyous user.',
     0: 'Success',
     -1: 'Request failed.',
     -10001: 'Argument {argument} was not supplied.',

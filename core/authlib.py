@@ -10,7 +10,6 @@ def get_if_email_exists(email):
 
 
 def email_verification(email, otp):
-
     email = EmailVerification.objects(email__iexact=email).first()
     if not email:
         return -101
@@ -77,6 +76,19 @@ def get_token_scope(uuid, token):
 
         return None
     return None
+
+def get_token_validity(uuid, token):
+    user = core.userlib.get_user_status_by_uuid(uuid)
+    if user:
+        for t in user.tokens:
+            if t.token == token:
+                if t.expiry <= time.time():
+                    user.tokens.remove(t)
+                    user.save()
+                    return False
+                return True
+        return False
+    return False
 
 
 # def new_qr_request(scope='login'):

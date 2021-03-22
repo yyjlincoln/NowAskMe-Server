@@ -1,6 +1,8 @@
 import views.auth
 import views.user
 import views.post
+import views.config
+
 from flask import Flask, Blueprint
 from flask_cors import CORS
 from utils.RequestMapping import RequestMap
@@ -32,6 +34,7 @@ db.init_app(app)
 views.auth.attach(rmap)
 views.user.attach(rmap)
 views.post.attach(rmap)
+views.config.attach(rmap)
 
 # Handle flask
 rmap.handle_flask(app)

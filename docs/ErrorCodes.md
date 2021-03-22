@@ -30,6 +30,10 @@ Already unpinned
 
 Not authenticated yet
 
+### 106
+
+Insufficient permissions. Requesting as an anomonyous user.
+
 ### 10000
 
 Development Mode
