@@ -14,4 +14,4 @@ def attach(rmap):
             status = 106
 
         # Get config using uuid
-        return Res(status, core.configlib.get_config_by_uuid(uuid))
+        return Res(status, config = core.configlib.get_config_by_uuid(uuid))
