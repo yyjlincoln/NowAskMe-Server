@@ -10,6 +10,20 @@ from sendgrid.helpers.mail import Mail
 from core.database import EmailVerification
 import os
 import logging
+import json
+
+
+templates = {}
+# Read templates
+try:
+    with open('email_templates.json') as f:
+        templates = json.loads(f.read())
+except Exception as e:
+    logging.warning('Could not load the templates with the following exception:', e)
+
+logging.info('Loaded '+str(len(templates))+' email templates.')
+
+# Send email from templates only.
 
 def send_email(email, subject, message):
     try:

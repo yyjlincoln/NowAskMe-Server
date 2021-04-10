@@ -40,11 +40,10 @@ views.config.attach(rmap)
 rmap.handle_flask(app)
 
 
-@app.route('/batch')
+@app.route('/batch', methods = ['GET','POST'])
 @Arg(batch=json.loads)
 def batch_request(batch):
     return rmap.parse_batch(batch)
-
 
 if __name__ == "__main__":
     app.run()
