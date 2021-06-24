@@ -10,7 +10,7 @@ PUBLIC_CONFIG = {
     'ui.showStream': True,
     'ui.showMe': True,
     'ui.showSettings': False,
-
+    'beta': False
 }
 
 BETA_CONFIG = {
@@ -21,7 +21,8 @@ BETA_CONFIG = {
     'ui.showBox': True,
     'ui.showStream': True,
     'ui.showMe': True,
-    'ui.showSettings': True
+    'ui.showSettings': True,
+    'beta': True
 }
 
 
