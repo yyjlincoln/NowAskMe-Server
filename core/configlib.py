@@ -10,6 +10,7 @@ PUBLIC_CONFIG = {
     'ui.showStream': True,
     'ui.showMe': True,
     'ui.showSettings': False,
+    'ui.profile.showQA': False,
     'beta': False
 }
 
@@ -22,6 +23,7 @@ BETA_CONFIG = {
     'ui.showStream': True,
     'ui.showMe': True,
     'ui.showSettings': True,
+    'ui.profile.showQA': True,
     'beta': True
 }
 
