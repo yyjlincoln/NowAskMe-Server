@@ -1,9 +1,34 @@
 import core.userlib
 
 PUBLIC_CONFIG = {
-    'ui.login.showOtherOptions':True
+    'ui.login.showOtherOptions': True,
+    'ui.login.showQR': False,
+    'ui.login.showPassword': False,
+    'ui.showDashboard': True,
+    'ui.showFriends': True,
+    'ui.showBox': False,
+    'ui.showStream': True,
+    'ui.showMe': True,
+    'ui.showSettings': False,
+
 }
 
-def get_config_by_uuid(uuid = ''):
-    # TODO
+BETA_CONFIG = {
+    'ui.login.showQR': True,
+    'ui.login.showPassword': True,
+    'ui.showDashboard': True,
+    'ui.showFriends': True,
+    'ui.showBox': True,
+    'ui.showStream': True,
+    'ui.showMe': True,
+    'ui.showSettings': True
+}
+
+
+def get_config_by_uuid(uuid=''):
+    if uuid == '':
+        return PUBLIC_CONFIG
+    if core.userlib.get_beta_status(uuid=uuid) == True:
+        return BETA_CONFIG
+
     return PUBLIC_CONFIG

@@ -46,4 +46,4 @@ def batch_request(batch):
     return rmap.parse_batch(batch)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=5001)

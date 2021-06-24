@@ -113,3 +113,15 @@ def attach(rmap):
         for user in core.userlib.search(term, only_name=only_name, only_userid=only_userid, only_uuid=only_uuid):
             ret.append(user.uuid)
         return Res(0, results=ret[start:limit])
+
+    @rmap.register_request('/user/set_beta')
+    @permission_control(scopes=['update_profile'])
+    @Arg(target=utils.AutoArgValidators.validate_user_existance, status=lambda x: False if x.lower() == 'false' else True)
+    def set_beta(uuid, status):
+        return Res(core.userlib.set_beta_status(uuid, status))
+
+    @rmap.register_request('/user/get_beta')
+    @permission_control(scopes=['basic_view'])
+    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    def get_beta(uuid):
+        return Res(0, status=core.userlib.get_beta_status(uuid))

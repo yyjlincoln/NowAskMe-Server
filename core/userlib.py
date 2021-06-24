@@ -41,6 +41,22 @@ def get_user_followers_relation_by_uuid(uuid):
     return UserRelations.objects(following__iexact=uuid)
 
 
+def set_beta_status(uuid, status):
+    user = get_user_info_by_uuid(uuid)
+    if not user:
+        return -105
+    user.beta = status
+    user.save()
+    return 0
+
+
+def get_beta_status(uuid):
+    user = get_user_info_by_uuid(uuid)
+    if not user:
+        return False
+    return user.beta
+
+
 def get_user_relations_by_uuid(uuid):
     return UserRelations.objects(uuid__iexact=uuid).first()
 

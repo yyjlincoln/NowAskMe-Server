@@ -7,6 +7,7 @@ class User(me.Document):
     userid = me.StringField()
     name = me.StringField(default="user")
     description = me.StringField(default="")
+    beta = me.BooleanField(default=False)
 
 
 class UserPrivate(me.Document):
