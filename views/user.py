@@ -14,8 +14,11 @@ def attach(rmap):
     @permission_control(scopes=['update_profile'])
     @Arg()
     def update_profile(uuid, name=None, userid=None, description=None):
-        core.email.send_profile_update_alert(uuid)
-        return Res(core.userlib.update_user_profile(uuid, name=name, userid=userid, description=description))
+        r = core.userlib.update_user_profile(uuid, name=name, userid=userid, description=description)
+        if r==0:
+            core.email.send_profile_update_alert(uuid)
+        return Res(r)
+
 
     @rmap.register_request('/user/get_profile')
     @permission_control(scopes=['basic_view'])
