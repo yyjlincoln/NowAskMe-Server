@@ -6,6 +6,7 @@ import core.userlib
 import utils.AutoArgValidators
 from utils.ResponseModule import Res
 from utils.AutoAuthentication import permission_control
+import core.email
 
 
 def attach(rmap):
@@ -13,6 +14,7 @@ def attach(rmap):
     @permission_control(scopes=['update_profile'])
     @Arg()
     def update_profile(uuid, name=None, userid=None, description=None):
+        core.email.send_profile_update_alert(uuid)
         return Res(core.userlib.update_user_profile(uuid, name=name, userid=userid, description=description))
 
     @rmap.register_request('/user/get_profile')
@@ -117,6 +119,8 @@ def attach(rmap):
     @permission_control(scopes=['update_profile'])
     @Arg(target=utils.AutoArgValidators.validate_user_existance, status=lambda x: False if x.lower() == 'false' else True)
     def set_beta(uuid, status):
+        if status:
+            core.email.send_beta_join_alert(uuid)
         return Res(core.userlib.set_beta_status(uuid, status))
 
     @rmap.register_request('/user/get_beta')

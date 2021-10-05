@@ -55,6 +55,7 @@ def attach(rmap):
                 return Res(-106, email=email)
             token = core.authlib.new_token(uuid=uuid, scope='login')
             user = core.userlib.get_user_info_by_uuid(uuid=uuid)
+            core.email.send_welcome_email(uuid)
             return Res(0, 'Successfully registered.', token=token, userid=user.userid, name=user.name, uuid=uuid)
         return Res(code, email=email)
 
