@@ -8,7 +8,6 @@ from utils.ResponseModule import Res
 from utils.AutoAuthentication import permission_control
 import core.email
 
-
 def attach(rmap):
     @rmap.register_request('/user/update_profile')
     @permission_control(scopes=['update_profile'])

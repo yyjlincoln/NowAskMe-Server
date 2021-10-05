@@ -7,6 +7,7 @@ import time
 import logging
 import secrets
 import json
+from flask import escape
 
 
 def send_login_verification(email, name):
@@ -34,8 +35,8 @@ def send_welcome_email(uuid):
 
 Your account has been created. Please keep this email for your records.
 
-Email: {email}
-Unique UUID: {uuid}
+Email: {str(escape(email))}
+Unique UUID: {str(escape(uuid))}
 
 Nowask.me is an anomynous Q&amp;A platform. It's a place where you can ask questions and get answers from other people, anomynously.
 
@@ -59,10 +60,10 @@ def send_profile_update_alert(uuid):
     email = userPrivate.email
     result = sendEmail(NowaskmeGeneralEmail, subject="You've updated your user profile", email=email, name = user.name, title = "You've updated your user profile.", content = f'''Here's how your new profile looks like:
 
-Name: {user.name}
-UserID: {user.userid}
-Description: {user.description}
-Unique UUID: {uuid}''')
+Name: {str(escape(user.name))}
+UserID: {str(escape(user.userid))}
+Description: {str(escape(user.description))}
+Unique UUID: {str(escape(uuid))}''')
     if result:
         return True
     return False
