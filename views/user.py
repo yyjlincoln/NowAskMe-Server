@@ -1,7 +1,6 @@
 import datetime
 from utils.AutoArguments import Arg
 import core.authlib
-import core.emaillib
 import core.userlib
 
 import utils.AutoArgValidators

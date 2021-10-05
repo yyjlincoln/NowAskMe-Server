@@ -1,10 +1,9 @@
 import datetime
 from utils.AutoArguments import Arg
 import core.authlib
-import core.emaillib
 from utils.AutoAuthentication import permission_control
 from utils.ResponseModule import Res
-
+import core.email
 
 def attach(rmap):
 
@@ -23,7 +22,7 @@ def attach(rmap):
             if userinfo.name != 'user':
                 name = userinfo.name
 
-        code = core.emaillib.send_login_verification(email=email, name=name)
+        code = core.email.send_login_verification(email=email, name=name)
 
         if code == False:
             return Res(-1, sent=False, message='Could not send the email!')
