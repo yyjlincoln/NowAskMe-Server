@@ -122,9 +122,10 @@ def attach(rmap):
     @permission_control(scopes=['update_profile'])
     @Arg(target=utils.AutoArgValidators.validate_user_existance, status=lambda x: False if x.lower() == 'false' else True)
     def set_beta(uuid, status):
-        if status:
+        r = core.userlib.set_beta_status(uuid, status)
+        if status and r==0:
             core.email.send_beta_join_alert(uuid)
-        return Res(core.userlib.set_beta_status(uuid, status))
+        return Res(r)
 
     @rmap.register_request('/user/get_beta')
     @permission_control(scopes=['basic_view'])
