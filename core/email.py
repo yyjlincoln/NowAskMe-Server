@@ -25,7 +25,7 @@ def send_login_verification(email, name):
 
 def send_welcome_email(uuid):
     user = core.userlib.get_user_info_by_uuid(uuid)
-    userPrivate = core.userlib.get_user_info_by_uuid(uuid)
+    userPrivate = core.userlib.get_user_private_by_uuid(uuid)
     if not user or not userPrivate:
         return False
 
@@ -52,7 +52,7 @@ Thanks for your continued support.''')
 
 def send_profile_update_alert(uuid):
     user = core.userlib.get_user_info_by_uuid(uuid)
-    userPrivate = core.userlib.get_user_info_by_uuid(uuid)
+    userPrivate = core.userlib.get_user_private_by_uuid(uuid)
     if not user or not userPrivate:
         return False
 
@@ -69,7 +69,7 @@ Unique UUID: {uuid}''')
 
 def send_beta_join_alert(uuid):
     user = core.userlib.get_user_info_by_uuid(uuid)
-    userPrivate = core.userlib.get_user_info_by_uuid(uuid)
+    userPrivate = core.userlib.get_user_private_by_uuid(uuid)
     if not user or not userPrivate:
         return False
 
