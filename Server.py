@@ -4,7 +4,6 @@ import views.post
 import views.config
 
 from flask import Flask, Blueprint
-from flask_cors import CORS
 from utils.RequestMapping import RequestMap
 from utils.AutoArguments import Arg
 from utils.ResponseModule import Res
@@ -18,8 +17,6 @@ app = Flask(__name__)
 # NOT the Arg() function, then __fetch_values will NOT be passed.
 # To resolve this, enable this option so it forcibly passes the arguments.
 rmap = RequestMap(always_pass_channel_and_fetch_values=True)
-# CORS Policy
-CORS(app)
 
 # Connection to the database
 db = MongoEngine()
