@@ -209,7 +209,7 @@ class NowaskmeGeneralEmail(EmailTemplate):
                                       <img class="max-width" border="0"
                                         style="display:block; color:#000000; text-decoration:none; font-family:Helvetica, arial, sans-serif; font-size:16px; max-width:100% !important; width:100%; height:auto !important;"
                                         width="600" alt="" data-proportionally-constrained="true" data-responsive="true"
-                                        src="https://static.nowask.me/yyjlincoln/nam-email-header.png">
+                                        src="https://static.yyjlincoln.com/yyjlincoln/nam-email-header.png">
                                     </td>
                                   </tr>
                                 </tbody>
@@ -503,7 +503,7 @@ class NowaskmeLoginVerification(EmailTemplate):
                                       <img class="max-width" border="0"
                                         style="display:block; color:#000000; text-decoration:none; font-family:Helvetica, arial, sans-serif; font-size:16px; max-width:100% !important; width:100%; height:auto !important;"
                                         width="600" alt="" data-proportionally-constrained="true" data-responsive="true"
-                                        src="https://static.nowask.me/yyjlincoln/nam-email-header.png">
+                                        src="https://static.yyjlincoln.com/yyjlincoln/nam-email-header.png">
                                     </td>
                                   </tr>
                                 </tbody>
