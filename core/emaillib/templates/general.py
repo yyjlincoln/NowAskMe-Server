@@ -540,7 +540,7 @@ class NowaskmeLoginVerification(EmailTemplate):
 
                                           If you didn't request for a verification code, please ignore this email. You account remains secure.
 
-                                          If you have any issues, please contact us at <a href="mailto:accounts@yyjlincoln.com">accounts@nowask.me</a>
+                                          If you have any issues, please contact us at <a href="mailto:accounts@nowask.me">accounts@nowask.me</a>
 
                                           Thanks again for your continued support.
 
