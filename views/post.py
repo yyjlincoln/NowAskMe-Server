@@ -1,7 +1,7 @@
 import utils.ConvertAndValidate
 import core.postlib
 import core.privacylib
-from Global import API
+from GlobalContext import API
 
 
 @API.endpoint('get-post', {

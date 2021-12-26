@@ -2,7 +2,7 @@ import core.authlib
 import core.userlib
 import utils.ConvertAndValidate
 import core.email
-from Global import API
+from GlobalContext import API
 
 
 @API.endpoint('update-profile', {

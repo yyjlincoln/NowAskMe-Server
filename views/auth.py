@@ -1,6 +1,6 @@
 import core.authlib
 import core.email
-from Global import API
+from GlobalContext import API
 
 
 @API.endpoint('check-email', {

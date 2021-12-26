@@ -1,6 +1,6 @@
 import core.authlib
 import core.configlib
-from Global import API
+from GlobalContext import API
 
 
 @API.endpoint('get-config', {
