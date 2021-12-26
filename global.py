@@ -1,24 +1,20 @@
-from flask import jsonify
-from flask import request
-# import json
+from mongoengine import connect
+from utils.RequestMap import Map
+from utils.RequestMap.Protocols.Flask import HTTPViaFlask
+from utils.RequestMap.Response.JSON import JSONStandardizer
+from utils.LocalRequestMapPlugins.Validator.Authentication
 
-batch_endpoints = [
-    # A list of flask endpoints that, when in that context, 
-    # and if __skip_batch is set to true, then return the data
-    # in dict form.
-    # This is useful as the original form can then be jsonified
-    # together with other data.
-    '/batch'
-]
+API = Map()
 
-_ExceptionDefinitions = {
+API.useProtocol(HTTPViaFlask())
+API.useResponseHandler(JSONStandardizer({
     10000: 'Development mode',
     101: 'Already following.',
     102: 'Already not following.',
     103: 'Already pinned',
     104: 'Already unpinned',
     105: 'Not authenticated yet',
-    106:'Insufficient permissions. Requesting as an anomonyous user.',
+    106: 'Insufficient permissions. Requesting as an anomonyous user.',
     0: 'Success',
     -1: 'Request failed.',
     -10001: 'Argument {argument} was not supplied.',
@@ -45,39 +41,9 @@ _ExceptionDefinitions = {
     -118: 'The requested post {postid} does not exist',
     -119: 'Access to this content is denied.',
     -120: 'Access to this operation has been denied.'
-}
-
-# Client-side exception bouncing
-
-
-def _transparent_data_proxy(data):
-    return data
+}))
+API.useValidator()
 
 
-def Res(code, message=None, __skip_batch=True, **kw):
-
-    _jsonify = jsonify
-    # Compatibility Layer - Determine whether this is a batch request.
-    # If this is a batch request, do NOT jsonify the data; instead,
-    # return it as its original form so it will be jsonified later.
-    if __skip_batch:
-        if request.path in batch_endpoints:
-            _jsonify = _transparent_data_proxy
-
-    if message:
-        return _jsonify({**{
-            'code': code,
-            'message': message
-        }, **kw})
-    if code in _ExceptionDefinitions:
-        message = _ExceptionDefinitions[code]
-        for key in kw:
-            # Plug the variables in
-            message = message.replace('{'+key+'}', str(kw[key]))
-        return _jsonify({**{
-            'code': code,
-            'message': message
-        }, **kw})
-    return _jsonify({**{
-        'code': code
-    }, **kw})
+# Connect to the database
+connect('nowaskme')

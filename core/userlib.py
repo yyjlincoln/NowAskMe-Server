@@ -12,7 +12,7 @@ def update_user_profile(uuid, **properties):
         return False
 
     for prop in properties:
-        if properties[prop] != None:
+        if properties[prop] is not None:
             try:
                 setattr(user, prop, properties[prop])
             except:

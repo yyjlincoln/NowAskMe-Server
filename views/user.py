@@ -3,9 +3,9 @@ from utils.AutoArguments import Arg
 import core.authlib
 import core.userlib
 
-import utils.AutoArgValidators
+import utils.LocalRequestMapPlugins.Validator.AutoArgValidators
 from utils.ResponseModule import Res
-from utils.AutoAuthentication import permission_control
+from utils.LocalRequestMapPlugins.Validator.AutoAuthentication import permission_control
 import core.email
 
 def attach(rmap):
@@ -21,7 +21,7 @@ def attach(rmap):
 
     @rmap.register_request('/user/get_profile')
     @permission_control(scopes=['basic_view'])
-    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    @Arg(target=utils.LocalRequestMapPlugins.Validator.AutoArgValidators.validate_user_existance)
     def get_profile(uuid, target=None):
         if not target:
             target = uuid
@@ -31,7 +31,7 @@ def attach(rmap):
 
     @rmap.register_request('/user/get_following')
     @permission_control(scopes=['relation_view'])
-    @Arg(start=int, limit=int, target=utils.AutoArgValidators.validate_user_existance)
+    @Arg(start=int, limit=int, target=utils.LocalRequestMapPlugins.Validator.AutoArgValidators.validate_user_existance)
     def get_following(uuid, target=None, start=0, limit=100):
         if not target:
             target = uuid
@@ -45,7 +45,7 @@ def attach(rmap):
 
     @rmap.register_request('/user/get_followers')
     @permission_control(scopes=['relation_view'])
-    @Arg(start=int, limit=int, target=utils.AutoArgValidators.validate_user_existance)
+    @Arg(start=int, limit=int, target=utils.LocalRequestMapPlugins.Validator.AutoArgValidators.validate_user_existance)
     def get_followers(uuid, target=None, start=0, limit=100):
         if not target:
             target = uuid
@@ -53,44 +53,44 @@ def attach(rmap):
 
     @rmap.register_request('/user/is_following')
     @permission_control(scopes=['relation_view'])
-    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    @Arg(target=utils.LocalRequestMapPlugins.Validator.AutoArgValidators.validate_user_existance)
     def is_following(uuid, target):
         return Res(0, following=core.userlib.is_following(uuid, target))
 
     @rmap.register_request('/user/is_follower')
     @permission_control(scopes=['relation_view'])
-    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    @Arg(target=utils.LocalRequestMapPlugins.Validator.AutoArgValidators.validate_user_existance)
     def is_follower(uuid, target):
         return Res(0, follower=core.userlib.is_following(target, uuid))
         # If target is following uuid, then to uuid, target is a follower.
 
     @rmap.register_request('/user/is_pinned')
     @permission_control(scopes=['relation_view'])
-    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    @Arg(target=utils.LocalRequestMapPlugins.Validator.AutoArgValidators.validate_user_existance)
     def is_pinned(uuid, target):
         return Res(0, pinned=core.userlib.is_pinned(uuid, target))
 
     @rmap.register_request('/user/follow')
     @permission_control(scopes=['relation_write'])
-    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    @Arg(target=utils.LocalRequestMapPlugins.Validator.AutoArgValidators.validate_user_existance)
     def follow(uuid, target):
         return Res(core.userlib.follow(uuid, target))
 
     @rmap.register_request('/user/unfollow')
     @permission_control(scopes=['relation_write'])
-    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    @Arg(target=utils.LocalRequestMapPlugins.Validator.AutoArgValidators.validate_user_existance)
     def unfollow(uuid, target):
         return Res(core.userlib.unfollow(uuid, target))
 
     @rmap.register_request('/user/pin')
     @permission_control(scopes=['relation_write'])
-    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    @Arg(target=utils.LocalRequestMapPlugins.Validator.AutoArgValidators.validate_user_existance)
     def pin(uuid, target):
         return Res(core.userlib.pin(uuid, target))
 
     @rmap.register_request('/user/unpin')
     @permission_control(scopes=['relation_write'])
-    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    @Arg(target=utils.LocalRequestMapPlugins.Validator.AutoArgValidators.validate_user_existance)
     def unpin(uuid, target):
         return Res(core.userlib.unpin(uuid, target))
 
@@ -119,7 +119,7 @@ def attach(rmap):
 
     @rmap.register_request('/user/set_beta')
     @permission_control(scopes=['update_profile'])
-    @Arg(target=utils.AutoArgValidators.validate_user_existance, status=lambda x: False if x.lower() == 'false' else True)
+    @Arg(target=utils.LocalRequestMapPlugins.Validator.AutoArgValidators.validate_user_existance, status=lambda x: False if x.lower() == 'false' else True)
     def set_beta(uuid, status):
         r = core.userlib.set_beta_status(uuid, status)
         if status and r==0:
@@ -128,6 +128,6 @@ def attach(rmap):
 
     @rmap.register_request('/user/get_beta')
     @permission_control(scopes=['basic_view'])
-    @Arg(target=utils.AutoArgValidators.validate_user_existance)
+    @Arg(target=utils.LocalRequestMapPlugins.Validator.AutoArgValidators.validate_user_existance)
     def get_beta(uuid):
         return Res(0, status=core.userlib.get_beta_status(uuid))

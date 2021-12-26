@@ -2,7 +2,7 @@ from core.database import Post
 import core.userlib
 import secrets
 import time
-import utils.PrivacyControl
+import utils.LocalRequestMapPlugins.Validator.PrivacyControl
 
 
 def get_post_by_postid(postid):
@@ -26,7 +26,7 @@ def get_stream(uuid):
         uuid__in=[*core.userlib.get_following_by_uuid(uuid), uuid]).order_by('-time')
     r = []
     for post in p:
-        if utils.PrivacyControl.post_privacy(post.postid, uuid):
+        if utils.LocalRequestMapPlugins.Validator.PrivacyControl.post_privacy(post.postid, uuid):
             r.append(post.postid)
     return r
 
@@ -35,6 +35,6 @@ def get_user_stream(uuid, target):
     p = Post.objects(uuid__iexact=target).order_by('-time')
     r = []
     for post in p:
-        if utils.PrivacyControl.post_privacy(post.postid, uuid):
+        if utils.LocalRequestMapPlugins.Validator.PrivacyControl.post_privacy(post.postid, uuid):
             r.append(post.postid)
     return r

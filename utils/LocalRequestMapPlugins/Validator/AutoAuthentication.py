@@ -3,7 +3,7 @@ from functools import wraps
 import core.authlib
 from utils.ResponseModule import Res
 from commons import NAMExceptions
-import utils.PrivacyControl
+import utils.LocalRequestMapPlugins.Validator.PrivacyControl
 
 # ScopeGroup -- MicroScope
 
