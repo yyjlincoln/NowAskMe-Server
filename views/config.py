@@ -5,7 +5,7 @@ from GlobalContext import API
 
 @API.endpoint('get-config', {
     'scopes': [],
-    'httproute': '/config/get_config'
+    'httproute': '/config'
 }, uuid=str, token=str)
 def configuration_distribution(makeResponse, uuid='', token=''):
     status = 0
