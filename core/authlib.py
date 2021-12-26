@@ -46,7 +46,7 @@ def new_user(email):
         newUserPrivacy.save()
         newUserPublic.save()
         return uuid
-    except:
+    except Exception:
         return False
 
 

@@ -11,7 +11,7 @@ if not os.path.exists('credentials.json'):
 try:
     with open('credentials.json','r') as f:
         Credentials = json.loads(f.read())
-except:
+except Exception:
     logging.fatal('Could not load credentials!')
     raise CredentialsError('Could not load credentials')
 

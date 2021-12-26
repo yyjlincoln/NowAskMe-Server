@@ -15,13 +15,13 @@ def update_user_profile(uuid, **properties):
         if properties[prop] is not None:
             try:
                 setattr(user, prop, properties[prop])
-            except:
+            except Exception:
                 return -113
 
     try:
         user.save()
         return 0
-    except:
+    except Exception:
         return -114
 
 
@@ -120,7 +120,7 @@ def follow(uuid, target):
         u.following.append(target)
         u.save()
         return 0
-    except:
+    except Exception:
         return -114
 
 
@@ -135,7 +135,7 @@ def unfollow(uuid, target):
         u.following.remove(target)
         u.save()
         return 0
-    except:
+    except Exception:
         return -114
 
 
@@ -150,7 +150,7 @@ def pin(uuid, target):
         u.pinned.append(target)
         u.save()
         return 0
-    except:
+    except Exception:
         return -114
 
 
@@ -165,7 +165,7 @@ def unpin(uuid, target):
         u.pinned.remove(target)
         u.save()
         return 0
-    except:
+    except Exception:
         return -114
 
 

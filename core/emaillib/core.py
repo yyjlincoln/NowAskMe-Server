@@ -7,15 +7,15 @@ import logging
 APIKEY = None
 
 try:
-    with open('secrets.json') as f:
+    with open('credentials.json') as f:
         r = json.loads(f.read())
-        APIKEY = r['apikey']
+        APIKEY = r['email']['apikey']
         logging.info("APIKey was read.")
 except Exception as e:
     raise PermissionError("Could not read the API key.", e)
 
 
-def sendEmail(template: EmailTemplate, email: str, subject: str, fromName = 'Lincoln Yan', fromEmail = 'noreply@nowask.me', templateOptions: dict = {}, **options) -> bool:
+def sendEmail(template: EmailTemplate, email: str, subject: str, fromName='Lincoln Yan', fromEmail='noreply@nowask.me', templateOptions: dict = {}, **options) -> bool:
     if APIKEY:
         message = Mail(
             from_email=f'{fromName} <{fromEmail}>',
@@ -31,4 +31,3 @@ def sendEmail(template: EmailTemplate, email: str, subject: str, fromName = 'Lin
             return False
     else:
         raise Exception('A sendgrid API key is required to send emails.')
-
