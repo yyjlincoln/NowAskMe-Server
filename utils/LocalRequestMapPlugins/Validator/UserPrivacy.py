@@ -20,7 +20,7 @@ class UserPrivacyValidator(StandardValidator):
         self.map = None
         self.name = None
 
-    def getEvaluationMethod(self, endpoint, protocolName):
+    def getEvaluationMethod(self, endpoint, protocol):
         '''
         Returns the evaluation method for the given endpoint.
         '''

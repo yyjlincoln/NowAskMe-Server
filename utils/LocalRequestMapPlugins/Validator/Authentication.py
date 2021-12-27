@@ -39,7 +39,7 @@ class AuthenticationValidator(StandardValidator):
         'Initialise the validator - there is nothing to initialise.'
         pass
 
-    def getEvaluationMethod(self, endpoint, protocolName):
+    def getEvaluationMethod(self, endpoint, protocol):
         '''
         Returns the evaluation method for the given endpoint.
         '''
