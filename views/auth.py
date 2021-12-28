@@ -67,7 +67,7 @@ def register(email, otp, makeResponse):
     return makeResponse(code, email=email)
 
 
-@API.endpoint('check_scope', {
+@API.endpoint('check-scope', {
     'scopes': ['basic_view'],
     'httproute': '/auth/check_scope'
 })
