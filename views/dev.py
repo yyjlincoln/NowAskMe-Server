@@ -4,7 +4,7 @@ from GlobalContext import API
 @API.endpoint("endpoint-info", {
     'httpmethods': ['GET'],
     'httproute': '/dev/endpoint-info',
-    'authlevel': 'public'
+    'scopes': []
 })
 def endpointInfo(makeResponse, path=None, identifier=None):
     def JSONSafe(object):
