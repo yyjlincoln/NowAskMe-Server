@@ -49,4 +49,8 @@ API.useValidator(AuthenticationValidator())
 API.useValidator(UserPrivacyValidator())
 
 # Connect to the database
-connect('nowaskme')
+import json
+with open("credentials.json", "r") as f:
+    secrets = json.load(f)
+    assert 'dbURL' in secrets
+    connect(host=secrets['dbURL'])
